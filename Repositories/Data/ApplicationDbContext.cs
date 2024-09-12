@@ -21,6 +21,9 @@ namespace Repositories.Data
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<Payment> Payments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +36,9 @@ namespace Repositories.Data
             modelBuilder.Entity<Blog>().HasKey(b => b.Id);
             modelBuilder.Entity<Cart>().HasKey(c => c.Id);
             modelBuilder.Entity<CartProduct>().HasKey(cp => cp.Id);
+            modelBuilder.Entity<Order>().HasKey(o => o.Id);
+            modelBuilder.Entity<OrderProduct>().HasKey(op => op.Id);
+            modelBuilder.Entity<Payment>().HasKey(p => p.Id);
 
             modelBuilder.Entity<SubCategory>()
                 .HasOne(sc => sc.Category)
@@ -68,6 +74,26 @@ namespace Repositories.Data
                 .HasOne(cp => cp.Product)
                 .WithMany()
                 .HasForeignKey(cp => cp.ProductId);
+
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.User)
+                .WithMany()
+                .HasForeignKey(o => o.UserId);
+
+            modelBuilder.Entity<OrderProduct>()
+                .HasOne(op => op.Order)
+                .WithMany(o => o.OrderProducts)
+                .HasForeignKey(op => op.OrderId);
+
+            modelBuilder.Entity<OrderProduct>()
+                .HasOne(op => op.Product)
+                .WithMany()
+                .HasForeignKey(op => op.ProductId);
+
+            modelBuilder.Entity<Payment>()
+                .HasOne(p => p.Order)
+                .WithMany()
+                .HasForeignKey(p => p.OrderId);
         }
     }
 }
