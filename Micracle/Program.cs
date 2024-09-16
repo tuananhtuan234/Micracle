@@ -1,6 +1,10 @@
 
 using Microsoft.EntityFrameworkCore;
+using Repositories;
 using Repositories.Data;
+using Repositories.Interface;
+using Services;
+using Services.Interface;
 
 namespace Micracle
 {
@@ -16,6 +20,8 @@ namespace Micracle
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<ICardServices, CardServices>();
+            builder.Services.AddScoped<ICardRepositories, CardRepository>();
 
             //SQL
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
