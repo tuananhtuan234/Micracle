@@ -12,7 +12,7 @@ namespace Repositories.Interface
         Task DeleteProducts(string ProductId);
         Task<List<Product>> GetAllProducts();
         Task AddProducts(Product product);
-        Task UpdateProducts(Product product);
+        Task<bool> UpdateProducts(Product product);
         Task<Product> GetProductsById(string ProductId);
     }
 }

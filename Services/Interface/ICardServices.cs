@@ -1,4 +1,6 @@
-﻿using Repositories.Data.Entity;
+﻿using Micracle.DTOs;
+using Repositories.Data.DTOs;
+using Repositories.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +11,10 @@ namespace Services.Interface
 {
     public interface ICardServices
     {
-        Task Delete(string productId);
-        Task Update(Product product);
-        Task AddProduct(Product product);
+        Task<string> Update(string productId, ProductRequestDtos product);
+        Task AddProduct(ProductDTO productdto);
         Task<Product> GetProductById(string ProductsId);
         Task<List<Product>> GetAllProduct();
+        Task<string> Delete(string productId);
     }
 }
