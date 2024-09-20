@@ -23,6 +23,9 @@ namespace Micracle
             builder.Services.AddScoped<ICardServices, CardServices>();
             builder.Services.AddScoped<ICardRepositories, CardRepository>();
 
+            builder.Services.AddScoped<ICategoryServices, CategoryServices>();
+            builder.Services.AddScoped<ICategoryRepositories, CategoryRepository>();
+
             //SQL
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>

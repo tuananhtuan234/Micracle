@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Repositories.Interface
 {
-    public interface ICategoryRepository
+    public interface ICategoryRepositories
     {
         Task<List<Category>> GetAllCategories();
-        Task<Category> GetCagariesById(string categoryId);
+        Task<Category> GetCategoriesById(string categoryId);
         Task AddCategory(Category category);
-        Task UpdateCategory(Category category);
+        Task<bool> UpdateCategory(Category category);
         Task DeleteCategory(string categoryId);
 
     }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : ICategoryRepositories
     {
         private readonly ApplicationDbContext _context;
          
@@ -24,7 +24,7 @@ namespace Repositories
             return await _context.Categories.ToListAsync();
         }
 
-        public async Task<Category> GetCagariesById(string categoryId)
+        public async Task<Category> GetCategoriesById(string categoryId)
         {
             return await _context.Categories.FirstOrDefaultAsync(sc => sc.Id.Equals(categoryId));
         }
@@ -35,15 +35,15 @@ namespace Repositories
             await _context.SaveChangesAsync();  
         }
 
-        public async Task UpdateCategory(Category category)
+        public async Task<bool> UpdateCategory(Category category)
         {
             _context.Categories.Update(category);
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task DeleteCategory(string categoryId)
         {
-            var category = await GetCagariesById(categoryId);   
+            var category = await GetCategoriesById(categoryId);   
             if(category != null)
             {
                 _context.Categories.Remove(category);
