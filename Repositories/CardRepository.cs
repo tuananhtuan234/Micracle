@@ -52,5 +52,11 @@ namespace Repositories
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<List<Product>> SearchProductsByName(string productName)
+        {
+            return await _context.Products
+                                 .Where(p => p.ProductName.Contains(productName))
+                                 .ToListAsync();
+        }
     }
 }

@@ -111,5 +111,31 @@ namespace Micracle.Controllers
             return BadRequest("Product not found");
 
         }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchProducts(string productName)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(productName))
+                {
+                    return BadRequest("Product name is required for search");
+                }
+
+                var products = await _services.SearchProductsByName(productName);
+
+                if (products == null || !products.Any())
+                {
+                    return NotFound("No products found with the given name");
+                }
+
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
     }
 }

@@ -14,5 +14,6 @@ namespace Repositories.Interface
         Task AddProducts(Product product);
         Task<bool> UpdateProducts(Product product);
         Task<Product> GetProductsById(string ProductId);
+        Task<List<Product>> SearchProductsByName(string productName);
     }
 }

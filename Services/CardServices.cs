@@ -87,5 +87,10 @@ namespace Services
             await _repositories.DeleteProducts(productId);
             return "Delete success";
         }
+
+        public async Task<List<Product>> SearchProductsByName(string productName)
+        {
+            return await _repositories.SearchProductsByName(productName);
+        }
     }
 }
