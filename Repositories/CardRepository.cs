@@ -21,8 +21,12 @@ namespace Repositories
             _context = context;
         }
 
-        public async Task<List<Product>> GetAllProducts()
+        public async Task<List<Product>> GetAllProducts(string searchterm)
         {
+            if (!string.IsNullOrEmpty(searchterm))
+            {
+                return await _context.Products.Where(p => p.ProductName.Contains(searchterm)).ToListAsync();
+            }
             return await _context.Products.ToListAsync();
         }
 

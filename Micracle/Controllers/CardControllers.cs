@@ -18,11 +18,11 @@ namespace Micracle.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts(string searchterm)
         {
             try
             {
-                var product = await _services.GetAllProduct();
+                var product = await _services.GetAllProduct(searchterm);
                 if (product == null)
                 {
                     return NotFound();
