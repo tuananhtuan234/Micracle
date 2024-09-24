@@ -26,6 +26,10 @@ namespace Micracle
             builder.Services.AddScoped<ICategoryServices, CategoryServices>();
             builder.Services.AddScoped<ICategoryRepositories, CategoryRepository>();
 
+            builder.Services.AddScoped<ISubCategoryServices, SubCategoriesServices>();
+            builder.Services.AddScoped<ISubCategoriesRepository, SubCategoryRepository>();
+
+
             //SQL
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
