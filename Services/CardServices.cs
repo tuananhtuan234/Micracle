@@ -20,9 +20,9 @@ namespace Services
             _repositories = repositories;
         }
 
-        public async Task<List<Product>> GetAllProduct()
+        public async Task<List<Product>> GetAllProduct(string searchterm)
         {
-            return await _repositories.GetAllProducts();
+            return await _repositories.GetAllProducts(searchterm);
         }
 
         public async Task<Product> GetProductById(string ProductsId)
