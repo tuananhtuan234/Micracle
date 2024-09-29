@@ -1,4 +1,4 @@
-﻿using MailKit;
+using MailKit;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Repositories.Data.Entity;
