@@ -76,6 +76,15 @@ namespace Micracle
             builder.Services.AddScoped<IUserServices, UserServices>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+            builder.Services.AddScoped<ICartProductService, CartProductService>();
+            builder.Services.AddScoped<ICartProductRepository, CartProductRepository>();
+
+            builder.Services.AddScoped<ICartRepository, CartRepository>();
+            builder.Services.AddScoped<ICartService, CartService>();
+
+
+
+
             builder.Services.AddMemoryCache();
             builder.Services.AddScoped<VerificationCodeManager>();
             builder.Services.AddSingleton<JwtTokenHelper>();
