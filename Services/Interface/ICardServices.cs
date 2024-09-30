@@ -15,7 +15,6 @@ namespace Services.Interface
         Task AddProduct(ProductDTO productdto);
         Task<Product> GetProductById(string ProductsId);
         Task<List<Product>> GetAllProduct(string searchterm);
-        Task<string> Delete(string productId);
-        Task<List<Product>> SearchProductsByName(string productName);
+        Task<string> Delete(string productId);     
     }
 }

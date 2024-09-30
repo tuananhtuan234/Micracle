@@ -12,28 +12,31 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
-    public class CardRepository: ICardRepositories
+    public class CardRepository : ICardRepositories
     {
         private readonly ApplicationDbContext _context;
-        
-       public CardRepository(ApplicationDbContext context)
+
+        public CardRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<List<Product>> GetAllProducts(string searchterm)
+        public async Task<List<Product>> GetAllProducts(string? searchterm)
         {
-            if (!string.IsNullOrEmpty(searchterm))
+            if (searchterm != null)
             {
                 return await _context.Products.Where(p => p.ProductName.Contains(searchterm)).ToListAsync();
             }
-            return await _context.Products.ToListAsync();
+            else
+            {
+                return await _context.Products.ToListAsync();
+            }
         }
 
         public async Task AddProducts(Product product)
         {
             _context.Products.Add(product);
-            await _context.SaveChangesAsync();  
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> UpdateProducts(Product product)
@@ -56,11 +59,6 @@ namespace Repositories
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<List<Product>> SearchProductsByName(string productName)
-        {
-            return await _context.Products
-                                 .Where(p => p.ProductName.Contains(productName))
-                                 .ToListAsync();
-        }
+     
     }
 }

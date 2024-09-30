@@ -20,7 +20,7 @@ namespace Services
             _repositories = repositories;
         }
 
-        public async Task<List<Product>> GetAllProduct(string searchterm)
+        public async Task<List<Product>> GetAllProduct(string? searchterm)
         {
             return await _repositories.GetAllProducts(searchterm);
         }
@@ -88,9 +88,6 @@ namespace Services
             return "Delete success";
         }
 
-        public async Task<List<Product>> SearchProductsByName(string productName)
-        {
-            return await _repositories.SearchProductsByName(productName);
-        }
+      
     }
 }
