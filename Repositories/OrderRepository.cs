@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repositories.Data;
 using Repositories.Data.Entity;
+using Repositories.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
-    public class OrderRepository
+    public class OrderRepository : IOrderRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -28,16 +29,16 @@ namespace Repositories
             return await _context.Orders.FirstOrDefaultAsync(sc => sc.Id.Equals(orderId));
         }
 
-        public async Task AddOrder (Order order)
+        public async Task<bool> AddOrder (Order order)
         {
             _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task UpdateOrder(Order order)
+        public async Task<bool> UpdateOrder(Order order)
         {
             _context.Orders.Update(order);
-            await _context.SaveChangesAsync();
+           return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task DeleteOrder(string orderId)
