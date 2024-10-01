@@ -30,6 +30,22 @@ namespace Micracle.Controllers
             _productImagesServices = productImagesServices;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllImages()
+        {
+            try
+            {
+                var result = await _imagesServices.GetAllImages();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
         [HttpPost("uploadImage")]
         public async Task<IActionResult> UploadImage([FromForm] ImageUploadViewModel request)
         {
@@ -75,5 +91,5 @@ namespace Micracle.Controllers
         }
     }
 }
-    
+
 

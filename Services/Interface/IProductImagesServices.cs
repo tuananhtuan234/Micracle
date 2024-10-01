@@ -10,9 +10,10 @@ namespace Services.Interface
 {
     public interface IProductImagesServices
     {
-        Task<List<ProductImage>> GetAllProductImages();
+        Task<List<ProductImagesResponse>> GetAllProductImages();
         
         Task<ProductImage> GetProductImageById(string id);
-        Task AddProductImages(ProductImagesRequestDtos porductImagesRequestDtos);
+        Task<string> AddProductImages(string productId, string imageId);
+        Task<ProductImagesResponse> GetProductImages(string productImageId);
     }
 }
