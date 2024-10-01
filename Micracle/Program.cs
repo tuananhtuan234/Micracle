@@ -1,4 +1,6 @@
 
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -20,6 +22,11 @@ namespace Micracle
             var builder = WebApplication.CreateBuilder(args);
 
 
+            // Khởi tạo Firebase Admin SDK
+            FirebaseApp.Create(new AppOptions()
+            {
+                Credential = GoogleCredential.FromFile("D:\\Workspace\\miracles-ef238-firebase-adminsdk-mm7s5-0c76f3bec8.json") // Đường dẫn đến file JSON
+            });
             // Add services to the container.
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -82,7 +89,12 @@ namespace Micracle
             builder.Services.AddScoped<ICartRepository, CartRepository>();
             builder.Services.AddScoped<ICartService, CartService>();
 
+            builder.Services.AddScoped<IImagesServices, ImageServices>();
+            builder.Services.AddScoped<IImagesRepository, ImagesRepository>();
 
+
+            builder.Services.AddScoped<IProductImagesRepository, ProductImagesRepository>();
+            builder.Services.AddScoped<IProductImagesServices, ProductImageServices>();
 
 
             builder.Services.AddMemoryCache();
