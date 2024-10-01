@@ -31,8 +31,8 @@ namespace Services
 
         public async Task<string> AddProductImages(string productId, string imageId)
         {
-            var product = _cardsRepository.GetProductById(productId);
-            var images = _imagesRepository.GetImageByid(imageId);
+            var product = await _cardsRepository.GetProductById(productId);
+            var images = await _imagesRepository.GetImageByid(imageId);
             if (product == null)
             {
                 return "Product not found ";
