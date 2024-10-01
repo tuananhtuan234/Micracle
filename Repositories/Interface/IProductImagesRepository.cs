@@ -12,6 +12,6 @@ namespace Repositories.Interface
         Task<List<ProductImage>> GetAllImagesAsync();
         Task<ProductImage> GetByIdAsync(string id);
 
-        Task AddProductWithImages(ProductImage image);
+        Task<bool> AddProductWithImages(ProductImage image);
     }
 }

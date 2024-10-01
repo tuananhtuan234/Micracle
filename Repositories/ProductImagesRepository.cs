@@ -19,10 +19,10 @@ namespace Repositories
             _context = context;
         }
 
-        public async Task AddProductWithImages(ProductImage image)
+        public async Task<bool> AddProductWithImages(ProductImage image)
         {
             _context.ProductImages.Add(image);
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<List<ProductImage>> GetAllImagesAsync()
