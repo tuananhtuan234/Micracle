@@ -36,6 +36,11 @@ namespace Repositories
             var temp = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
             return temp;
         }
+
+        public async Task<User> GetUserById(string userId)
+        {
+           return await _context.Users.FirstOrDefaultAsync(sc =>sc.Id.Equals(userId));
+        }
         #endregion
 
         #region Sub code

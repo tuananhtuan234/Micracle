@@ -33,10 +33,10 @@ namespace Repositories
             }
         }
 
-        public async Task AddProducts(Product product)
+        public async Task<bool> AddProducts(Product product)
         {
             _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+           return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> UpdateProducts(Product product)

@@ -11,8 +11,8 @@ namespace Services.Interface
 {
     public interface ICardServices
     {
-        Task<string> Update(string productId, ProductRequestDtos product);
-        Task AddProduct(ProductDTO productdto);
+        Task<string> Update(string productId, string UserId, ProductRequestDtos product);
+        Task<string> AddProduct(string UserId, ProductDTO productdto);
         Task<Product> GetProductById(string ProductsId);
         Task<List<Product>> GetAllProduct(string searchterm);
         Task<string> Delete(string productId);     

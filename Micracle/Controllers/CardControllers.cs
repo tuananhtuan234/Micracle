@@ -53,17 +53,16 @@ namespace Micracle.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProducts(ProductDTO productdto)
+        public async Task<IActionResult> AddProducts(string UserId, ProductDTO productdto)
         {
             if (productdto == null)
             {
                 return BadRequest("Product data is null");
             }
-
             try
             {
-                await _services.AddProduct(productdto);
-                return Ok("Product added successfully");
+                var result = await _services.AddProduct(UserId, productdto);
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -73,17 +72,18 @@ namespace Micracle.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateProduct(string productIds, ProductRequestDtos requestDtos)
+        public async Task<IActionResult> UpdateProduct(string productIds, string UserId, ProductRequestDtos requestDtos)
         {
-            if(productIds == null)
+            if (productIds == null)
             {
                 return BadRequest("You need enter Id of product");
             }
             try
             {
-                var result = await _services.Update(productIds, requestDtos);
+                var result = await _services.Update(productIds, UserId, requestDtos);
                 return Ok(result);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -95,12 +95,13 @@ namespace Micracle.Controllers
             try
             {
 
-            if (!string.IsNullOrEmpty(productIds))
-            {
-                var result = await _services.Delete(productIds);
-                return Ok(result);
+                if (!string.IsNullOrEmpty(productIds))
+                {
+                    var result = await _services.Delete(productIds);
+                    return Ok(result);
+                }
             }
-            }catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -108,7 +109,7 @@ namespace Micracle.Controllers
 
         }
 
-       
+
 
     }
 }
