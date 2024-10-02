@@ -1,7 +1,9 @@
 using MailKit;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Repositories.Data.DTOs;
 using Repositories.Data.Entity;
+using Repositories.Enums;
 using Repositories.Interface;
 using Services.Helpers;
 using Services.Interface;
@@ -25,7 +27,7 @@ namespace Services
         private readonly ILogger<UserServices> _logger;
 
 
-        public UserServices(IUserRepository userRepository, IMemoryCache cache, IEmailServices emailServices, 
+        public UserServices(IUserRepository userRepository, IMemoryCache cache, IEmailServices emailServices,
             VerificationCodeManager verificationCodeManager, ILogger<UserServices> logger)
         {
             _userRepository = userRepository;
@@ -124,6 +126,63 @@ namespace Services
             }
 
             return user;
+        }
+        #endregion
+
+        #region CRUD
+
+        //Get by Id
+        public async Task<User> GetUserByIdAsync(string id)
+        {
+            var u = await _userRepository.GetUserById(id);
+            if (u == null)
+            {
+                throw new ArgumentException("Cannot find this Id.");
+            }
+            else
+            {
+                return u;
+            }
+        }
+
+
+        //Update
+        public async Task<bool> UpdateUserAsync(UpdateUserDTO updateUserDTO, string userId)
+        {
+            var existedUser = await _userRepository.GetUserById(userId);
+            if (existedUser == null)
+            {
+                throw new ArgumentException("Cannot find this user Id.");
+            }
+            else
+            {
+                existedUser.UserName = updateUserDTO.UserName;
+                existedUser.Password = updateUserDTO.Password;
+                if (await IsValidEmail(updateUserDTO.Email))
+                { existedUser.Email = updateUserDTO.Email; }
+                else return false;
+                existedUser.PhoneNumber = updateUserDTO.PhoneNumber;
+                existedUser.Province = updateUserDTO.Province;
+                existedUser.District = updateUserDTO.District;
+                existedUser.Address = updateUserDTO.Address;
+                existedUser.UpdatedDate = DateTime.Now;
+                if (Enum.TryParse<UserStatus>(updateUserDTO.Status, true, out var status))
+                {
+                    existedUser.Status = (int)status;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid status value.");
+                }
+            }
+            await _userRepository.UpdateUserAsync(existedUser);
+            return true;
+        }
+
+        //Get all
+        public async Task<List<User>> GetAllUsers()
+        {
+            return await _userRepository.GetAllUsers();
         }
         #endregion
 

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Data.DTOs;
+using Repositories.Enums;
 using Services.Helpers;
 using Services.Interface;
+using System.ComponentModel.DataAnnotations;
 
 namespace Micracle.Controllers
 {
@@ -71,6 +73,93 @@ namespace Micracle.Controllers
             // Tạo token JWT và trả về cho người dùng
             var token = _jwtTokenHelper.GenerateJwtToken(user);
             return Ok(new { token });
+        }
+        #endregion
+
+        #region Get by Id
+        [HttpGet]
+        [Route("GetUserByID")]
+        public async Task<IActionResult> GetUserByID([Required] String id)
+        {
+            try
+            {
+                var user = await _userService.GetUserByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                var result = new
+                {
+                    user.Id,
+                    user.UserName,
+                    user.Password,
+                    user.FullName,
+                    user.Email,
+                    user.PhoneNumber,
+                    user.Province,
+                    user.District,
+                    user.Address,
+                    user.CreatedDate,
+                    user.UpdatedDate,
+                    user.Status,
+                    Role = ((UserRole)user.Role).ToString(),
+                    user.Cart
+                };
+
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
+            }
+        }
+        #endregion
+
+        #region Update user by Id
+        [HttpPatch]
+        [Route("UpdateUserByID")]
+        public async Task<IActionResult> UpdateUserByID([FromQuery] String id, [FromBody] UpdateUserDTO userDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _userService.UpdateUserAsync(userDTO, id);
+                return Ok(result ? "Update Successful" : "Update failed");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+
+        }
+        #endregion
+
+        #region Get all users
+        [HttpGet]
+        [Route("GetAllUsers")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var user = await _userService.GetAllUsers();
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
         }
         #endregion
     }

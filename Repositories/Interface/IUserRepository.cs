@@ -13,5 +13,6 @@ namespace Repositories.Interface
         Task<List<User>> GetAllUsers();
         Task AddUserAsync(User user);
         Task<User> GetUserByEmailAsync(string email);
+        Task UpdateUserAsync(User user);
     }
 }
