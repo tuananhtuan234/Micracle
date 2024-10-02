@@ -23,10 +23,10 @@ namespace Micracle
 
 
             // Khởi tạo Firebase Admin SDK
-            FirebaseApp.Create(new AppOptions()
+            /*FirebaseApp.Create(new AppOptions()
             {
                 Credential = GoogleCredential.FromFile("D:\\Workspace\\miracles-ef238-firebase-adminsdk-mm7s5-0c76f3bec8.json") // Đường dẫn đến file JSON
-            });
+            });*/
             // Add services to the container.
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();

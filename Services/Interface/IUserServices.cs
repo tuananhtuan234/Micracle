@@ -1,3 +1,4 @@
+using Repositories.Data.DTOs;
 using Repositories.Data.Entity;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,8 @@ namespace Services.Interface
         Task<bool> ConfirmUserAsync(string email, string code);
         Task<User> GetUserByEmail(string email);
         Task<User> AuthenticateAsync(string email, string password);
+        Task<User> GetUserByIdAsync(string id);
+        Task<bool> UpdateUserAsync(UpdateUserDTO updateUserDTO, string userId);
+        Task<List<User>> GetAllUsers();
     }
 }
