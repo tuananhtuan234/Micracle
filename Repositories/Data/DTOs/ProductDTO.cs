@@ -9,7 +9,6 @@ namespace Micracle.DTOs
         public int Quantity { get; set; }
         public float Price { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
         public string SubCategoryId { get; set; }
     }
 }
