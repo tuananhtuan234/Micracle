@@ -1,4 +1,5 @@
 ﻿using Repositories.Data.Entity;
+using Repositories.Enums;
 
 namespace Micracle.DTOs
 {
@@ -7,11 +8,8 @@ namespace Micracle.DTOs
         public string ProductName { get; set; }
         public int Quantity { get; set; }
         public float Price { get; set; }
-        public string Status { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
-        public string CreatedBy { get; set; }
-        public string UpdatedBy { get; set; }
         public string SubCategoryId { get; set; }
     }
 }
