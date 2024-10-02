@@ -61,7 +61,7 @@ namespace Services
                 CreatedBy = user.FullName,
                 UpdatedBy = null,
                 CreatedDate = DateTime.Now,
-                UpdatedDate = DateTime.Now,
+                UpdatedDate = null,
                 SubCategoryId = productdto.SubCategoryId,
             };
 
