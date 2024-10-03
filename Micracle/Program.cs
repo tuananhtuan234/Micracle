@@ -70,6 +70,8 @@ namespace Micracle
                     });
             });
 
+            builder.Services.AddScoped<IOrderProductServices, OrderProductServices>();
+            builder.Services.AddScoped<IOrderProductRepository, OrderProductRepository>();
 
             builder.Services.AddScoped<ICardServices, CardServices>();
             builder.Services.AddScoped<ICardRepositories, CardRepository>();
@@ -96,6 +98,9 @@ namespace Micracle
             builder.Services.AddScoped<IProductImagesRepository, ProductImagesRepository>();
             builder.Services.AddScoped<IProductImagesServices, ProductImageServices>();
 
+            builder.Services.AddScoped<IOrderServices, OrderServices>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
 
             builder.Services.AddMemoryCache();
             builder.Services.AddScoped<VerificationCodeManager>();
@@ -103,7 +108,6 @@ namespace Micracle
 
             builder.Services.AddScoped<IEmailServices, EmailServices>();
             builder.Services.AddScoped<EmailServices>();
-
 
             //SQL
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

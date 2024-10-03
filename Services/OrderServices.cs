@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class OrderServices: IOrderServices
+    public class OrderServices : IOrderServices
     {
         private readonly IOrderRepository _repository;
 
@@ -21,7 +21,7 @@ namespace Services
 
         public async Task<string> AddOrder(OrderDto orderDto)
         {
-           if (orderDto == null)
+            if (orderDto == null)
             {
                 return "Data null";
             }
@@ -46,7 +46,6 @@ namespace Services
         {
             return await _repository.GetAllOrder();
         }
-
         public async Task<Order> GetOrderById(string orderId)
         {
             return await _repository.GetOrderById(orderId);
