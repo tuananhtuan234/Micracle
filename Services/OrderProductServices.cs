@@ -33,6 +33,10 @@ namespace Services
             {
                 return "Not have enough quantity for this card";
             }
+            if(card.Status == "Disable")
+            {
+                return "This product is not existed";
+            }
             OrderProduct orderProduct = new OrderProduct()
             { 
                 Id = Guid.NewGuid().ToString(),
@@ -67,6 +71,14 @@ namespace Services
             if (existingOrderProduct != null)
             {
                 return "order product not found";
+            }
+            if(orderProductRequest.Quantity > card.Quantity)
+            {
+                return "Not have enough quantity for this card";
+            }
+            if (card.Status == "Disable")
+            {
+                return "This product is not existed";
             }
             existingOrderProduct.Quantity = orderProductRequest.Quantity;
             existingOrderProduct.Price = card.Price * orderProductRequest.Quantity;

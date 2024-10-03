@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Data.DTOs;
 using Services;
+using Services.Interface;
 
 namespace Micracle.Controllers
 {
@@ -9,9 +10,8 @@ namespace Micracle.Controllers
     [ApiController]
     public class OrderProductController : ControllerBase
     {
-        private readonly OrderProductServices _services;
-
-        public OrderProductController(OrderProductServices services)
+        private readonly IOrderProductServices _services;
+        public OrderProductController(IOrderProductServices services)
         {
             _services = services;
         }
