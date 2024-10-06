@@ -57,6 +57,7 @@ namespace Services
                 ProductName = productdto.ProductName,
                 Quantity = productdto.Quantity,
                 Price = productdto.Price,
+                Description = productdto.Description,
                 Status = ProductStatus.Active.ToString(),
                 CreatedBy = user.FullName,
                 UpdatedBy = null,
@@ -91,6 +92,7 @@ namespace Services
                 existingCard.ProductName = product.ProductName;
                 existingCard.Quantity = product.Quantity;
                 existingCard.Price = product.Price;
+                existingCard.Description = product.Description;
                 existingCard.UpdatedDate = DateTime.Now;
                 existingCard.UpdatedBy = user.FullName;
                 if (product.Quantity == 0)
