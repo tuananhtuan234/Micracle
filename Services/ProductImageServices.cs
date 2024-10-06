@@ -83,6 +83,39 @@ namespace Services
             return productImagesResponses;
         }
 
+        public async Task<List<ProductImagesResponse>> GetAllProductbySubCate(string subcategoryId)
+        {
+            List<ProductImagesResponse> productImagesResponses = new List<ProductImagesResponse>();
+            var ProductImages = await _productsImagesRepository.GetAllProductbySubCate(subcategoryId);
+            {
+                foreach (var item in ProductImages)
+                {
+                    var product = await _cardsRepository.GetProductById(item.ProductId);
+                    var image = await _imagesRepository.GetImageByid(item.ImageId);
+                    var subcategory = await _subCategoriesRepository.GetSubCategoryById(product.SubCategoryId);
+                    var category = await _categoryRepositories.GetCategoriesById(subcategory.CategoryId);
+                    var newProductImages = new ProductImagesResponse()
+                    {
+                        ProductId = item.ProductId,
+                        ImageId = item.ImageId,
+                        ProductName = product.ProductName,
+                        Description = product.Description,
+                        Quantity = product.Quantity,
+                        Price = product.Price,
+                        Status = product.Status,
+                        CreatedDate = product.CreatedDate,
+                        UpdatedDate = product.UpdatedDate,
+                        CreatedBy = product.CreatedBy,
+                        UpdatedBy = product.UpdatedBy,
+                        Url = image.Url,
+                        Type = subcategory.Type,
+                        Brand = category.Brand,
+                    };
+                    productImagesResponses.Add(newProductImages);
+                }
+                return productImagesResponses;
+            }
+        }
 
         public async Task<ProductImagesResponse> GetProductImages(string productImageId)
         {
@@ -134,5 +167,6 @@ namespace Services
         {
             return await _productsImagesRepository.GetByIdAsync(id);
         }
+
     }
 }

@@ -70,8 +70,8 @@ namespace Micracle.Controllers
                         Amount = order.TotalPrice,
                         CreatedDate = DateTime.Now,
                         Description = "thanh toán VnPay",
-                        OrderId = paymentDTO.OrderId,
-                        FullName = user.FullName,
+                        OrderId = order.Id,
+                        FullName = user.FullName,                      
                     };
                     if (vnPayModel.Amount < 0)
                     {
@@ -90,52 +90,47 @@ namespace Micracle.Controllers
             }
         }
 
-        //[HttpGet("PaymentBack")]
-        //public async Task<IActionResult> PaymenCalltBack()
-        //{
-        //    var queryParameters = HttpContext.Request.Query;
-        //    // Kiểm tra và lấy giá trị 'vnp_OrderInfo' từ Query
-        //    string orderInfo = queryParameters["vnp_OrderInfo"];
-        //    string userId = _paymentServices.GetUserId(orderInfo);
-        //    string transactionId = _paymentServices.GetOrderId(orderInfo);
-        //    double amount = double.Parse(queryParameters["vnp_Amount"]);
-        //    if (string.IsNullOrEmpty(orderInfo))
-        //    {
-        //        return BadRequest("Thông tin đơn hàng không tồn tại.");
-        //    }
-        //    // Phân tích chuỗi 'orderInfo' để lấy các thông tin cần thiết
-        //    var orderInfoDict = new Dictionary<string, string>();
-        //    string[] pairs = orderInfo.Split(',');
-        //    foreach (var pair in pairs)
-        //    {
-        //        string[] keyValue = pair.Split(':');
-        //        if (keyValue.Length == 2)
-        //        {
-        //            orderInfoDict[keyValue[0].Trim()] = keyValue[1].Trim();
-        //        }
-        //    }
-        //    // Lấy ví tiền của người dùng dựa trên 'UserID'
-        //    var wallet = await _walletServices.GetWalletByUserId(userId);
-        //    if (wallet == null)
-        //    {
-        //        return BadRequest("Wallet not found for the given user.");
-        //    }
-        //    // Tạo và lưu trữ thông tin giao dịch     
-        //    var paymentDto = new PaymentDTO()
-        //    {
-        //         = transactionId,
-        //        Status = "Completed",
-        //        Amount = (float)amount / 100,  // Chia cho 100 nếu giá trị 'amount' là theo đơn vị nhỏ nhất của tiền tệ
-        //        Payment = "VnPay",
-        //        CreatedDate = DateTime.Now,
-        //    };
-        //    var result = await _services.AddTransaction(wallet.ID, transactiondto);
-        //    if (result == "Success")
-        //    {
-        //        await _walletServices.UpdateWalletBalanceAsync(transactionId);
-        //        return Redirect("https://meet.google.com/fcd-wvxs-cvn?authuser=1" + userId);
-        //    }
-        //    return BadRequest("Invalid transaction data.");
-        //}
+        [HttpGet("PaymentBack")]
+        public async Task<IActionResult> PaymenCalltBack()
+        {
+            var queryParameters = HttpContext.Request.Query;
+            // Kiểm tra và lấy giá trị 'vnp_OrderInfo' từ Query
+            string orderInfo = queryParameters["vnp_OrderInfo"];
+            string userId = _paymentServices.GetUserId(orderInfo);
+            string orderId = _paymentServices.GetOrderId(orderInfo);
+            double amount = double.Parse(queryParameters["vnp_Amount"]);
+            if (string.IsNullOrEmpty(orderInfo))
+            {
+                return BadRequest("Thông tin đơn hàng không tồn tại.");
+            }
+            // Phân tích chuỗi 'orderInfo' để lấy các thông tin cần thiết
+            var orderInfoDict = new Dictionary<string, string>();
+            string[] pairs = orderInfo.Split(',');
+            foreach (var pair in pairs)
+            {
+                string[] keyValue = pair.Split(':');
+                if (keyValue.Length == 2)
+                {
+                    orderInfoDict[keyValue[0].Trim()] = keyValue[1].Trim();
+                }
+            }
+
+            //Tạo và lưu trữ thông tin giao dịch
+        var paymentDto = new PaymentResponseDto()
+        {
+            
+            Status = 1,
+            Amount = (float)amount / 100,  // Chia cho 100 nếu giá trị 'amount' là theo đơn vị nhỏ nhất của tiền tệ
+            Method = "VnPay",
+            OrderId = orderId
+        };
+            var result = await _paymentServices.AddPayment(paymentDto);
+            if (result == "AddSuccessful")
+            {
+               
+                return Redirect("https://meet.google.com/fcd-wvxs-cvn?authuser=1" + userId);
+            }
+            return BadRequest("Invalid transaction data.");
+        }
     }
 }

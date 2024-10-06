@@ -13,6 +13,7 @@ namespace Services.Interface
     {
         Task<Payment> GetPaymentById(string paymnetId);
         Task<List<Payment>> GetAllPayment(string searchterm);
+        Task<string> AddPayment(PaymentResponseDto paymentResponseDto);
         string CreatePaymentUrl(HttpContext context, VnPaymentRequestModel model, string userid);
         VnPaymentResponseModel PaymentExecute(Dictionary<string, string> url);
         public string GetUserId(string orderInfo);

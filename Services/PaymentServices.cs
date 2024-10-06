@@ -38,6 +38,23 @@ namespace Services
         {
             return await _repository.GetAllPayment(searchterm);
         }
+        public async Task<string> AddPayment(PaymentResponseDto paymentResponseDto)
+        {
+            if (paymentResponseDto == null)
+            {
+                return "Data is null";
+            }
+            Payment payment = new Payment()
+            {
+                Id = paymentResponseDto.Id,
+                Method = paymentResponseDto.Method,
+                Amount = paymentResponseDto.Amount,
+                Status = paymentResponseDto.Status,
+                OrderId = paymentResponseDto.OrderId,
+            };
+            var result = await _repository.AddPayment(payment);
+            return result ? "AddSuccessful" : "Add failed";
+        }
 
         public string CreatePaymentUrl(HttpContext context, VnPaymentRequestModel model, string userid)
         {
@@ -179,5 +196,6 @@ namespace Services
                 return null;
             }
         }
+
     }
 }

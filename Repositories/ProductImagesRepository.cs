@@ -29,6 +29,10 @@ namespace Repositories
         {
            return await _context.ProductImages.ToListAsync();
         }
+        public async Task<List<ProductImage>> GetAllProductbySubCate(string subcategoryId)
+        {
+            return await _context.ProductImages.Where(sc => sc.Product.SubCategoryId.Equals(subcategoryId)).ToListAsync();
+        }
 
         public async Task<ProductImage> GetByIdAsync(string id)
         {

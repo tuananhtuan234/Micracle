@@ -62,7 +62,7 @@ namespace Micracle.Controllers
                     var bytes = memoryStream.ToArray();
 
                     // Initialize Firebase Admin SDK
-                    var credential = Google.Apis.Auth.OAuth2.GoogleCredential.FromFile("D:\\Workspace\\miracles-ef238-firebase-adminsdk-mm7s5-0c76f3bec8.json");
+                    var credential = Google.Apis.Auth.OAuth2.GoogleCredential.FromFile("miracles-ef238-firebase-adminsdk-mm7s5-0c76f3bec8.json");
                     //tạm thời hardcode, thay sau FromFile thành đường dẫn file net1701-jewelry...
                     var storage = StorageClient.Create(credential);
 
