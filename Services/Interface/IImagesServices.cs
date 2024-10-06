@@ -1,4 +1,6 @@
-﻿using Repositories.Data.Entity;
+﻿using Repositories.Data.DTOs;
+using Repositories.Data.Entity;
+using Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,6 @@ namespace Services.Interface
     {
         Task<List<Image>> GetAllImages();
         Task<Image> GetImagesById(string id);
-        Task<bool> AddImages(string ImageUrl);
+        Task<ServicesResponse<ImageResponseDto>> AddImages(string ImageUrl);
     }
 }

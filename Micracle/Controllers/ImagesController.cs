@@ -81,7 +81,7 @@ namespace Micracle.Controllers
                     var downloadUrl = storageObject.MediaLink;
 
                     var result = await _imagesServices.AddImages(downloadUrl);
-                    return Ok(result ? "Upload Successful and Add images Successful" : "Upload failed");
+                    return Ok(result);
                 }
             }
             catch (Exception ex)

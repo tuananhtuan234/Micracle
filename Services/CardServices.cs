@@ -3,6 +3,7 @@ using Repositories.Data.DTOs;
 using Repositories.Data.Entity;
 using Repositories.Enums;
 using Repositories.Interface;
+using Services.Helpers;
 using Services.Interface;
 using System;
 using System.Collections.Generic;
@@ -33,42 +34,47 @@ namespace Services
             return await _repositories.GetProductsById(ProductsId);
         }
 
-        public async Task<string> AddProduct(string UserId, ProductDTO productdto)
+        public async Task<ServicesResponse<AddProductResponseDTO>> AddProduct(string UserId, ProductDTO productdto)
         {
-            var user = await _userRepository.GetUserById(UserId);
-            if(user == null)
+            try
             {
-                return "User Not found";
+                var user = await _userRepository.GetUserById(UserId);
+                if (user == null)
+                {
+                    return ServicesResponse<AddProductResponseDTO>.ErrorResponse("User Not found");
+                }
+                if (productdto == null)
+                {
+                    return ServicesResponse<AddProductResponseDTO>.ErrorResponse("Prodcuts do not existed");
+                }
+                if (string.IsNullOrWhiteSpace(productdto.ProductName) || productdto.ProductName == "string")
+                {
+                    return ServicesResponse<AddProductResponseDTO>.ErrorResponse("Products must be required");
+                }
+                if (productdto.Quantity < 0)
+                {
+                    return ServicesResponse<AddProductResponseDTO>.ErrorResponse("Quantity cannot be less than 0");
+                }
+                Product newProduct = new Product()
+                {
+                    ProductName = productdto.ProductName,
+                    Quantity = productdto.Quantity,
+                    Price = productdto.Price,
+                    Description = productdto.Description,
+                    Status = ProductStatus.Active.ToString(),
+                    CreatedBy = user.FullName,
+                    UpdatedBy = null,
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = null,
+                    SubCategoryId = productdto.SubCategoryId,
+                };
+                await _repositories.AddProducts(newProduct);
+                return ServicesResponse<AddProductResponseDTO>.SuccessResponse(new AddProductResponseDTO { ProductId = newProduct.Id });
             }
-            if (productdto == null)
+            catch (Exception ex)
             {
-               return "Prodcuts do not existed";
+                return ServicesResponse<AddProductResponseDTO>.ErrorResponse($"An error occurred while adding the product: {ex.Message}");
             }
-            if (string.IsNullOrWhiteSpace(productdto.ProductName) || productdto.ProductName == "string")
-            {
-                return "Products must be required"; 
-            }
-            if (productdto.Quantity < 0)
-            {
-                return "Quantity cannot be less than 0";
-            }
-            Product newProduct = new Product()
-            {
-                ProductName = productdto.ProductName,
-                Quantity = productdto.Quantity,
-                Price = productdto.Price,
-                Description = productdto.Description,
-                Status = ProductStatus.Active.ToString(),
-                CreatedBy = user.FullName,
-                UpdatedBy = null,
-                CreatedDate = DateTime.Now,
-                UpdatedDate = null,
-                SubCategoryId = productdto.SubCategoryId,
-            };
-
-            var result = await _repositories.AddProducts(newProduct);
-            return result ? "Add Successful" : "Add Failed";
-
         }
 
         public async Task<string> Update(string productId, string UserId, ProductRequestDtos product)
