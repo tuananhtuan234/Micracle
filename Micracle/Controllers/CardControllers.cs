@@ -59,16 +59,16 @@ namespace Micracle.Controllers
             {
                 return BadRequest("Product data is null");
             }
-            try
-            {
+            //try
+            //{
                 var result = await _services.AddProduct(UserId, productdto);
                 return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                //Trả về lỗi nếu có exception
-                return BadRequest(ex.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    //Trả về lỗi nếu có exception
+            //    return BadRequest(ex.Message);
+            //}
         }
 
         [HttpPut]
