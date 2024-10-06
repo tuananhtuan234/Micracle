@@ -11,7 +11,7 @@ namespace Repositories.Interface
     {
         Task DeleteProducts(string ProductId);
         Task<List<Product>> GetAllProducts(string? searchterm);
-        Task<bool> AddProducts(Product product);
+        Task AddProducts(Product product);
         Task<bool> UpdateProducts(Product product);
         Task<Product> GetProductsById(string ProductId);
       

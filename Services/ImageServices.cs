@@ -1,5 +1,7 @@
-﻿using Repositories.Data.Entity;
+﻿using Repositories.Data.DTOs;
+using Repositories.Data.Entity;
 using Repositories.Interface;
+using Services.Helpers;
 using Services.Interface;
 using System;
 using System.Collections.Generic;
@@ -18,7 +20,7 @@ namespace Services
             _imagesRepository = imagesRepository;
         }
 
-        public async Task<bool> AddImages(string ImageUrl)
+        public async Task<ServicesResponse<ImageResponseDto>> AddImages(string ImageUrl)
         {
             try
             {
@@ -28,10 +30,10 @@ namespace Services
                     Url = ImageUrl,
                 };
                 await _imagesRepository.AddImages(newImages);
-                return true;
+                return ServicesResponse<ImageResponseDto>.SuccessResponse(new ImageResponseDto { ImageId = newImages.Id }); ;
             }catch(Exception ex)
             {
-                return false;
+                return ServicesResponse<ImageResponseDto>.ErrorResponse($"An error occurred while adding the product: {ex.Message}");
             }
         }
 

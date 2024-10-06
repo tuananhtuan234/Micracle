@@ -119,5 +119,65 @@ namespace Services
                 VnPayResponseCode = vnp_ResponseCode
             };
         }
+
+        public string GetUserId(string orderInfo)
+        {
+            string details = orderInfo.Substring(orderInfo.IndexOf(':') + 1);
+
+            // Tách các cặp khóa-giá trị
+            var keyValuePairs = details.Split(',');
+
+            // Dictionary để lưu các cặp khóa-giá trị
+            var dict = new Dictionary<string, string>();
+
+            foreach (var pair in keyValuePairs)
+            {
+                var keyValue = pair.Split(':');
+                if (keyValue.Length == 2)
+                {
+                    dict[keyValue[0].Trim()] = keyValue[1].Trim();
+                }
+            }
+
+            // Lấy UserID và Amount từ dictionary
+            if (dict.TryGetValue("UserID", out string userId))
+            {
+                return userId;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public string GetOrderId(string orderInfo)
+        {
+            string details = orderInfo.Substring(orderInfo.IndexOf(':') + 1);
+
+            // Tách các cặp khóa-giá trị
+            var keyValuePairs = details.Split(',');
+
+            // Dictionary để lưu các cặp khóa-giá trị
+            var dict = new Dictionary<string, string>();
+
+            foreach (var pair in keyValuePairs)
+            {
+                var keyValue = pair.Split(':');
+                if (keyValue.Length == 2)
+                {
+                    dict[keyValue[0].Trim()] = keyValue[1].Trim();
+                }
+            }
+
+            // Lấy UserID và Amount từ dictionary
+            if (dict.TryGetValue("OrderId", out string orderId))
+            {
+                return orderId;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

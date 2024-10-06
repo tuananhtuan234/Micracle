@@ -15,5 +15,7 @@ namespace Services.Interface
         Task<List<Payment>> GetAllPayment(string searchterm);
         string CreatePaymentUrl(HttpContext context, VnPaymentRequestModel model, string userid);
         VnPaymentResponseModel PaymentExecute(Dictionary<string, string> url);
+        public string GetUserId(string orderInfo);
+        public string GetOrderId(string orderInfo);
     }
 }
