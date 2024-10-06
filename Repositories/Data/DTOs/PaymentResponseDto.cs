@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Repositories.Data.DTOs
 {
-    public class PaymentDTO
+    public class PaymentResponseDto
     {
+        public string Id { get; set; }
         public string Method { get; set; }
         public float Amount { get; set; }
         public string OrderId { get; set; }

@@ -11,7 +11,7 @@ namespace Repositories.Interface
     {
         Task<List<ProductImage>> GetAllImagesAsync();
         Task<ProductImage> GetByIdAsync(string id);
-
+        Task<List<ProductImage>> GetAllProductbySubCate(string subcategoryId);
         Task<bool> AddProductWithImages(ProductImage image);
     }
 }

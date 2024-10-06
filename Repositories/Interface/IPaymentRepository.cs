@@ -11,6 +11,7 @@ namespace Repositories.Interface
     {
         Task<Payment> GetPaymentById(string paymnetId);
         Task<List<Payment>> GetAllPayment(string searchterm);
+        Task<bool> AddPayment (Payment payment);
 
     }
 }

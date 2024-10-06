@@ -11,7 +11,7 @@ namespace Services.Interface
     public interface IProductImagesServices
     {
         Task<List<ProductImagesResponse>> GetAllProductImages();
-        
+        Task<List<ProductImagesResponse>> GetAllProductbySubCate(string subcategoryId);
         Task<ProductImage> GetProductImageById(string id);
         Task<string> AddProductImages(string productId, string imageId);
         Task<ProductImagesResponse> GetProductImages(string productImageId);

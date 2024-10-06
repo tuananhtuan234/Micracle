@@ -36,6 +36,10 @@ namespace Repositories
             }
         }
 
-      
+        public async Task<bool> AddPayment(Payment payment)
+        {
+            _context.Payments.Add(payment);
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }

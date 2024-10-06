@@ -34,6 +34,25 @@ namespace Micracle.Controllers
             }
         }
 
+        [HttpGet("SubcategoryId")]
+        public async Task<IActionResult> GetAllProductImagesBySubCategory(string SubcategoryId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(SubcategoryId))
+                {
+                    return BadRequest("Please enter subcategoryId");
+                }
+                var results = await _services.GetAllProductbySubCate(SubcategoryId);
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
         [HttpGet("id")]
         public async Task<IActionResult> GetProductImagesById(string productImagesId)
         {

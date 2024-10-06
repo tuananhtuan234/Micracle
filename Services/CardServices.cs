@@ -45,7 +45,7 @@ namespace Services
                 }
                 if (productdto == null)
                 {
-                    return ServicesResponse<AddProductResponseDTO>.ErrorResponse("Prodcuts do not existed");
+                    return ServicesResponse<AddProductResponseDTO>.ErrorResponse("Products do not existed");
                 }
                 if (string.IsNullOrWhiteSpace(productdto.ProductName) || productdto.ProductName == "string")
                 {
@@ -57,6 +57,7 @@ namespace Services
                 }
                 Product newProduct = new Product()
                 {
+                    Id = Guid.NewGuid().ToString(),
                     ProductName = productdto.ProductName,
                     Quantity = productdto.Quantity,
                     Price = productdto.Price,
@@ -125,7 +126,6 @@ namespace Services
             await _repositories.DeleteProducts(productId);
             return "Delete success";
         }
-
-
+      
     }
 }
