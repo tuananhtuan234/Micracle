@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repositories.Data;
 using Repositories.Data.Entity;
+using Repositories.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
-    public class PaymentRepository
+    public class PaymentRepository: IPaymentRepository
     {
         private readonly ApplicationDbContext _context;
 
