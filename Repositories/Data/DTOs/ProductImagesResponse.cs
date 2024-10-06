@@ -11,6 +11,7 @@ namespace Repositories.Data.DTOs
         public string ProductId { get; set; }
         public string ImageId { get; set; }
         public string ProductName { get; set; }
+        public string Description { get; set; }
         public int Quantity { get; set; }
         public float Price { get; set; }
         public string Status { get; set; }
