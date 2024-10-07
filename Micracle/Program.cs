@@ -104,6 +104,9 @@ namespace Micracle
             builder.Services.AddScoped<IOrderServices, OrderServices>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
+            builder.Services.AddScoped<IPaymentServices, PaymentServices>();
+            builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+
 
             builder.Services.AddMemoryCache();
             builder.Services.AddScoped<VerificationCodeManager>();
