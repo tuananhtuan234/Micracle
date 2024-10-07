@@ -118,7 +118,7 @@ namespace Micracle.Controllers
             //Tạo và lưu trữ thông tin giao dịch
         var paymentDto = new PaymentResponseDto()
         {
-            
+            Id = Guid.NewGuid().ToString(),
             Status = 1,
             Amount = (float)amount / 100,  // Chia cho 100 nếu giá trị 'amount' là theo đơn vị nhỏ nhất của tiền tệ
             Method = "VnPay",
