@@ -158,6 +158,7 @@ namespace Services
             {
                 existedUser.UserName = updateUserDTO.UserName;
                 existedUser.Password = updateUserDTO.Password;
+                existedUser.FullName = updateUserDTO.FullName;
                 if (await IsValidEmail(updateUserDTO.Email))
                 { existedUser.Email = updateUserDTO.Email; }
                 else return false;
