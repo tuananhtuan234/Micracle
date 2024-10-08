@@ -1,4 +1,5 @@
-﻿using Repositories.Data.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using Repositories.Data.DTOs;
 using Repositories.Data.Entity;
 using Repositories.Interface;
 using Services.Interface;
@@ -14,17 +15,19 @@ namespace Services
     {
         private readonly ICartRepository _cartRepository;
         private readonly ICartProductRepository _cartProductRepository;
+        private readonly ICardRepositories _cardRepositories;
 
-        public CartProductService(ICartRepository cartRepository, ICartProductRepository cartProductRepository)
+
+        public CartProductService(ICartRepository cartRepository, ICartProductRepository cartProductRepository, ICardRepositories cardRepositories)
         {
             _cartRepository = cartRepository;
             _cartProductRepository = cartProductRepository;
+            _cardRepositories = cardRepositories;
         }
 
         public async Task<CartProduct> AddCartProductAsync(string userId, AddCartProductDTO addCartProductDTO)
         {
             var cart = await _cartRepository.GetCartByUserIdAsync(userId);
-
             // If the cart doesn't exist, create a new one
             if (cart == null)
             {
@@ -37,7 +40,7 @@ namespace Services
             }
             // Tìm CartProduct tồn tại trong cart
             var existingCartProduct = cart.CartProducts.FirstOrDefault(cp => cp.ProductId == addCartProductDTO.ProductId);
-
+            Product findProductByProductId = await _cardRepositories.GetProductsById(addCartProductDTO.ProductId);
             if (existingCartProduct != null)
             {
                 existingCartProduct.Quantity += addCartProductDTO.Quantity;
@@ -50,7 +53,8 @@ namespace Services
             {
                 CartId = cart.Id,
                 ProductId = addCartProductDTO.ProductId,
-                Quantity = addCartProductDTO.Quantity
+                Quantity = addCartProductDTO.Quantity,
+                Price = findProductByProductId.Price * addCartProductDTO.Quantity
             };
 
             // Thêm sản phẩm vào giỏ hàng

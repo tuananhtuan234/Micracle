@@ -18,7 +18,7 @@ namespace Services
             _cartRepository = cartRepository;
         }
 
-        public async Task<List<AddCartProductDTO>> GetCartProductsByUserIdAsync(string userId)
+        public async Task<List<CartProductDTO>> GetCartProductsByUserIdAsync(string userId)
         {
             // Lấy giỏ hàng của user dựa trên userId
             var cart = await _cartRepository.GetCartByUserIdAsync(userId);
@@ -30,10 +30,11 @@ namespace Services
             }
 
             // Lấy danh sách các sản phẩm từ giỏ hàng
-            var cartProducts = cart.CartProducts.Select(cp => new AddCartProductDTO
+            var cartProducts = cart.CartProducts.Select(cp => new CartProductDTO
             {
                 ProductId = cp.ProductId,
-                Quantity = cp.Quantity
+                Quantity = cp.Quantity,
+                Price = cp.Price
             }).ToList();
 
             return cartProducts;

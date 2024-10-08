@@ -9,6 +9,6 @@ namespace Services.Interface
 {
     public interface ICartService
     {
-        Task<List<AddCartProductDTO>> GetCartProductsByUserIdAsync(string userId);
+        Task<List<CartProductDTO>> GetCartProductsByUserIdAsync(string userId);
     }
 }
