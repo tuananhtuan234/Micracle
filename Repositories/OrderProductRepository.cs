@@ -35,6 +35,11 @@ namespace Repositories
             }
         }
 
+        public async Task<List<OrderProduct>> GetAllOrderProductByOrderId(string orderId)
+        {
+            return await _context.OrderProducts.Where(sc => sc.OrderId.Equals(orderId)).ToListAsync();
+        }
+
         public async Task<List<OrderProduct>> GetAllOrderProduct()
         {
            return await _context.OrderProducts.ToListAsync();

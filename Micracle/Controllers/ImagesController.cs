@@ -77,8 +77,8 @@ namespace Micracle.Controllers
                         source: new MemoryStream(bytes)
                     );
                     // Tải file lên Firebase Storage
-                    var storageObject = await storage.GetObjectAsync(_bucketName, objectName);
-                    var downloadUrl = storageObject.MediaLink;
+                    //var storageObject = await storage.GetObjectAsync(_bucketName, objectName);
+                    var downloadUrl = /*storageObject.MediaLink*/ $"https://storage.googleapis.com/{_bucketName}/{objectName}";
 
                     var result = await _imagesServices.AddImages(downloadUrl);
                     return Ok(result);

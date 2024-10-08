@@ -14,5 +14,6 @@ namespace Repositories.Interface
         Task<bool> UpdateOrderProduct(OrderProduct orderProduct);
         Task DeleteOrderProductById(string orderId);
         Task<bool> AddOrderProduct(OrderProduct orderProduct);
+        Task<List<OrderProduct>> GetAllOrderProductByOrderId(string orderId);
     }
 }
