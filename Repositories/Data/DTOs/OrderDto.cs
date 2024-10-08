@@ -11,6 +11,5 @@ namespace Repositories.Data.DTOs
         public string UserId { get; set; }
         public DateTime OrderDate { get; set; }
         public int Status { get; set; }
-        public float TotalPrice { get; set; }
     }
 }
