@@ -8,6 +8,7 @@ namespace Repositories.Data.DTOs
 {
     public class ProductImagesResponse
     {
+        public string Id { get; set; }
         public string ProductId { get; set; }
         public string ImageId { get; set; }
         public string ProductName { get; set; }

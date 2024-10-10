@@ -117,9 +117,9 @@ namespace Services
             }
         }
 
-        public async Task<ProductImagesResponse> GetProductImages(string productImageId, string ImageId)
+        public async Task<ProductImagesResponse> GetProductImages(string productImageId)
         {
-            var productImage = await _productsImagesRepository.GetByIdAsync(productImageId, ImageId);
+            var productImage = await _productsImagesRepository.GetByIdAsync(productImageId);
             Product product = await _cardsRepository.GetProductById(productImage.ProductId);
             Image image = await _imagesRepository.GetImageByid(productImage.ImageId);
             SubCategory subCategory = await _subCategoriesRepository.GetSubCategoryById(product.SubCategoryId);

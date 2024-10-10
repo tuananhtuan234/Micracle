@@ -10,7 +10,7 @@ namespace Repositories.Interface
     public interface IProductImagesRepository
     {
         Task<List<ProductImage>> GetAllImagesAsync();
-        Task<ProductImage> GetByIdAsync(string productId, string imageId);
+        Task<ProductImage> GetByIdAsync(string productimageId);
         Task<List<ProductImage>> GetAllProductbySubCate(string subcategoryId);
         Task<bool> AddProductWithImages(ProductImage image);
     }

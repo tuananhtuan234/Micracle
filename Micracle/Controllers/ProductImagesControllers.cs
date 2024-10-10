@@ -55,11 +55,11 @@ namespace Micracle.Controllers
 
 
         [HttpGet("productImages")]
-        public async Task<IActionResult> GetProductIamges(string productImagesId, string imageId)
+        public async Task<IActionResult> GetProductIamges(string productImagesId)
         {
             try
             {
-                var result = await _services.GetProductImages(productImagesId, imageId);
+                var result = await _services.GetProductImages(productImagesId);
                 if (result == null)
                 {
                     return NotFound("product not found");
