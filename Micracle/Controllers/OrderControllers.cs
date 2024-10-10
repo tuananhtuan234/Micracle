@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Data.DTOs;
+using Services;
 using Services.Interface;
 
 namespace Micracle.Controllers
@@ -49,43 +50,6 @@ namespace Micracle.Controllers
                     return NotFound("Order do not existed");
                 }
                 return Ok(order);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddOrder(OrderDto orderDto)
-        {
-            try
-            {
-                var result = await _orderServices.AddOrder(orderDto);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateOrder(string? orderId, UpdateOrderDtos orderDto)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(orderId))
-                {
-                    return BadRequest("Please enter orderId");
-                }
-                if (orderDto == null)
-                {
-                    return BadRequest("data is null");
-                }
-                var result = await _orderServices.Update(orderId, orderDto);
-                return Ok(result);
-
             }
             catch (Exception ex)
             {

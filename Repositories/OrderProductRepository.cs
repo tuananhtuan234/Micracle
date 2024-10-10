@@ -25,6 +25,16 @@ namespace Repositories
            return  await _context.SaveChangesAsync() > 0;
         }
 
+        public async Task AddListOrderProduct(IEnumerable<OrderProduct> orderProducts)
+        {
+            if(orderProducts == null)
+            {
+                throw new ArgumentException("OrderProducts list cannot be null or empty");
+            }
+             _context.OrderProducts.AddRange(orderProducts);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task DeleteOrderProductById(string orderId)
         {
            var orderProduct = await GetOrderProductById(orderId);

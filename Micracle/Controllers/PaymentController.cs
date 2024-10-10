@@ -56,15 +56,12 @@ namespace Micracle.Controllers
         }
 
         [HttpPost("payment/vnpay")]
-        public async Task<IActionResult> AddPayment(PaymentDTO paymentDTO, string userId)
+        public async Task<IActionResult> AddPayment(string orderId, string userId)
         {
             var user = await _userService.GetUserByIdAsync(userId);
-            var order = await _orderServices.GetOrderById(paymentDTO.OrderId);
+            var order = await _orderServices.GetOrderById(orderId);
             try
-            {
-                var payment = new PaymentDTO();
-                if (paymentDTO.Method == "VnPay")
-                {
+            {               
                     var vnPayModel = new VnPaymentRequestModel()
                     {
                         Amount = order.TotalPrice,
@@ -80,9 +77,7 @@ namespace Micracle.Controllers
                     var paymentUrl = _paymentServices.CreatePaymentUrl(HttpContext, vnPayModel, userId);
                     return Ok(new { url = paymentUrl });
                     //return Redirect(_vpnPayServices.CreatePaymentUrl(HttpContext, vnPayModel, userId));
-                    //return new JsonResult(_vpnPayServices.CreatePaymentUrl(HttpContext, vnPayModel, userId));
-                }
-                return BadRequest("Payment not successful");
+                    //return new JsonResult(_vpnPayServices.CreatePaymentUrl(HttpContext, vnPayModel, userId));               
             }
             catch (Exception ex)
             {
@@ -127,7 +122,7 @@ namespace Micracle.Controllers
             var result = await _paymentServices.AddPayment(paymentDto);
             if (result == "AddSuccessful")
             {
-               
+                await _orderServices.UpdateStatus(orderId, 1);               
                 return Redirect("https://meet.google.com/fcd-wvxs-cvn?authuser=1" + userId);
             }
             return BadRequest("Invalid transaction data.");

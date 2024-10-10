@@ -11,6 +11,7 @@ namespace Repositories.Interface
     {
         Task<List<Order>> GetAllOrder();
         Task<Order> GetOrderById(string orderId);
+        Task<Order> GetOrderByUserId(string userId);
         Task<bool> AddOrder(Order order);
         Task<bool> UpdateOrder(Order order);
         Task DeleteOrder(string orderId);

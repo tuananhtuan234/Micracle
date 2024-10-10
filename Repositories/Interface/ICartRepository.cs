@@ -11,6 +11,8 @@ namespace Repositories.Interface
     {
         Task<Cart> GetCartByUserIdAsync(string userId);
         Task AddCartAsync(Cart cart);
+
+        Task RemoveCartProducts(string cartId);
     }
 
 }
