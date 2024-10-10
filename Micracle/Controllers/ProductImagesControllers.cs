@@ -53,30 +53,13 @@ namespace Micracle.Controllers
         }
 
 
-        [HttpGet("id")]
-        public async Task<IActionResult> GetProductImagesById(string productImagesId)
-        {
-            try
-            {
-                var result = await _services.GetProductImageById(productImagesId);
-                if (result == null)
-                {
-                    return NotFound("Product with images not found");
-                }
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
 
         [HttpGet("productImages")]
-        public async Task<IActionResult> GetProductIamges(string productImagesId)
+        public async Task<IActionResult> GetProductIamges(string productImagesId, string imageId)
         {
             try
             {
-                var result = await _services.GetProductImages(productImagesId);
+                var result = await _services.GetProductImages(productImagesId, imageId);
                 if (result == null)
                 {
                     return NotFound("product not found");
