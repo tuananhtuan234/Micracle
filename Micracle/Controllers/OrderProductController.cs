@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Repositories.Data.DTOs;
 using Services;
 using Services.Interface;
+using System.ComponentModel.DataAnnotations;
 
 namespace Micracle.Controllers
 {
@@ -48,27 +49,13 @@ namespace Micracle.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddOrderProduct(OrderProductRequest orderProductRequest)
+        [HttpPost("Add Order/ Order Product")]
+        public async Task<IActionResult> AddOrderProduct([Required] string userId, string? orderId)
         {
             try
             {
-                var reuslt = await _services.AddOrderProduct(orderProductRequest);
+                var reuslt = await _services.AddOrderProduct(userId, orderId);
                 return Ok(reuslt);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateOrderProduct(string OrderProductId, OrderProductRequestDtos orderProductRequest)
-        {
-            try
-            {
-                var results = await _services.UpdateOrderProduct(OrderProductId, orderProductRequest);
-                return Ok(results);
             }
             catch (Exception ex)
             {

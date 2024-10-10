@@ -28,6 +28,10 @@ namespace Repositories
         {
             return await _context.Orders.FirstOrDefaultAsync(sc => sc.Id.Equals(orderId));
         }
+        public async Task<Order> GetOrderByUserId(string userId)
+        {
+            return await _context.Orders.FirstOrDefaultAsync(sc => sc.UserId.Equals(userId));
+        }
 
         public async Task<bool> AddOrder (Order order)
         {

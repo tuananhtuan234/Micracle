@@ -14,10 +14,14 @@ namespace Services
     {
         private readonly IOrderRepository _repository;
         private readonly IOrderProductRepository _orderProductRepository;
-        public OrderServices(IOrderRepository repository, IOrderProductRepository orderProductRepository)
+        private readonly IUserRepository _userRepository;
+        private readonly ICartRepository _cartRepository;
+        public OrderServices(IOrderRepository repository, ICartRepository cartRepository , IOrderProductRepository orderProductRepository, IUserRepository userRepository)
         {
             _repository = repository;
             _orderProductRepository = orderProductRepository;
+            _userRepository = userRepository;
+            _cartRepository = cartRepository;
         }
 
         public async Task<string> AddOrder(OrderDto orderDto)
@@ -38,8 +42,24 @@ namespace Services
             order.TotalPrice = orderProduct.Sum(op => op.Price * op.Quantity);
             var result = await _repository.AddOrder(order);
             return result ? "Add Suucess" : "Add failed";
-        }
+        }      
 
+        public async Task<List<OrderProductDtos>> GetAllOrderProductBuUserId(string userId)
+        {
+            var order = await  _repository.GetOrderByUserId(userId);
+            if(order == null)
+            {
+                throw new Exception(" order not found");
+            }
+            var orderProduct = order.OrderProducts.Select(p => new OrderProductDtos()
+            {
+                ProductId = p.ProductId,
+                Quantity = p.Quantity,
+                Price = p.Price,
+            }).ToList();
+
+            return orderProduct;
+        }
         public async Task DeleteOrder(string orderId)
         {
             await _repository.DeleteOrder(orderId);
@@ -69,6 +89,45 @@ namespace Services
 
             var result = await _repository.UpdateOrder(existingOrder);
             return result ? "Update Success" : "update failed";
+        }
+
+        public async Task UpdateStatus(string orderId, int newStatus)
+        {
+            var existingOrder = await _repository.GetOrderById(orderId);
+            if (existingOrder == null)
+            {
+                throw new Exception( "Order not found");
+            }
+            switch (existingOrder.Status)
+            {
+                case 0:
+                    if (newStatus == 1 || newStatus == 2)
+                    {
+                        existingOrder.Status = newStatus; // Cho phép chuyển từ 0 sang 1 hoặc 2
+                                                          // chuyển từ chờ thanh toán sang thàng công hay thất bại
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid status transition.");
+                    }
+                    break;
+                case 1:
+                    if (newStatus == 2)
+                    {
+                        existingOrder.Status = newStatus; // Chuyển từ 1 sang 2
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid status transition.");
+                    }
+                    break;
+                case 2:
+                    throw new Exception("Order is already completed. No further updates allowed.");
+                default:
+                    throw new Exception("Invalid current status.");
+            }
+            await _repository.UpdateOrder(existingOrder);
+
         }
     }
 }

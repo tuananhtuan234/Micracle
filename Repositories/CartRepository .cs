@@ -31,6 +31,22 @@ namespace Repositories
             await _context.Carts.AddAsync(cart);
             await _context.SaveChangesAsync();
         }
+
+        public async Task RemoveCartProducts(string cartId)
+        {
+            // Lấy danh sách CartProduct theo CartId
+            var cartProducts = await _context.CartProducts.Where(cp => cp.CartId == cartId).ToListAsync();
+
+            // Kiểm tra nếu không tìm thấy sản phẩm nào trong giỏ hàng
+            if (cartProducts == null || !cartProducts.Any())
+                return; // Không có sản phẩm nào để xóa
+
+            // Xóa các sản phẩm trong giỏ hàng
+            _context.CartProducts.RemoveRange(cartProducts);
+
+            // Lưu thay đổi vào cơ sở dữ liệu
+            await _context.SaveChangesAsync();
+        }
     }
 
 }

@@ -12,8 +12,10 @@ namespace Services.Interface
     {
         Task<List<Order>> GetAllOrders();
         Task<Order> GetOrderById(string orderId);
+        Task<List<OrderProductDtos>> GetAllOrderProductBuUserId(string userId);
         Task<string> AddOrder(OrderDto orderDto);
         Task DeleteOrder(string orderId);
-        Task<string> Update(string orderId, UpdateOrderDtos orderDto);   
+        Task<string> Update(string orderId, UpdateOrderDtos orderDto);
+        Task UpdateStatus(string orderId, int newStatus);
     }
 }

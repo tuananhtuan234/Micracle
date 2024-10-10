@@ -12,7 +12,7 @@ namespace Services.Interface
     {
         Task<List<OrderProduct>> GetAllOrderProducts();
         Task<OrderProduct> GetByOrderProductById(string orderProductId);
-        Task<string> AddOrderProduct(OrderProductRequest orderProductRequest);
+        Task<string> AddOrderProduct(string userId, string OrderId);
         Task DeleteOrderProduct(string orderProductId);
         Task<string> UpdateOrderProduct(string orderproductId, OrderProductRequestDtos orderProductRequest);
     }

@@ -10,48 +10,72 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class OrderProductServices: IOrderProductServices
+    public class OrderProductServices : IOrderProductServices
     {
         private readonly IOrderProductRepository _repository;
         private readonly ICardRepositories _cardRepositories;
-        
+        private readonly IOrderRepository _orderRepository;
+        private readonly ICartRepository _cartRepository;
 
-        public OrderProductServices(IOrderProductRepository repository, ICardRepositories cardRepositories)
+
+        public OrderProductServices(IOrderProductRepository repository, ICardRepositories cardRepositories, IOrderRepository orderRepository, ICartRepository cartRepository)
         {
             _repository = repository;
             _cardRepositories = cardRepositories;
+            _orderRepository = orderRepository;
+            _cartRepository = cartRepository;
         }
 
-        public async Task<string> AddOrderProduct(OrderProductRequest orderProductRequest)
+        public async Task<string> AddOrderProduct(string userId, string OrderId)
         {
-            var card = await _cardRepositories.GetProductsById(orderProductRequest.ProductId);
-            if (orderProductRequest == null)
+            var order = await _orderRepository.GetOrderById(OrderId);
+            var cart = await _cartRepository.GetCartByUserIdAsync(userId);
+            if (order == null)
             {
-                return "Data not have";
+                // tạo order khi không có order
+                order = new Order()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserId = userId,
+                    OrderDate = DateTime.Now,
+                    Status = 0, // order mới tạo
+                    OrderProducts = new List<OrderProduct>(),
+                    TotalPrice = 0,
+                };
+                await _orderRepository.AddOrder(order);
             }
-            if(orderProductRequest.Quantity > card.Quantity)
+            // tạo order product dựa trên cartProduct
+            var orderProduct = cart.CartProducts.Select(cartProduct => new OrderProduct
             {
-                return "Not have enough quantity for this card";
-            }
-            if(card.Status == "Disable")
+                OrderId = order.Id,
+                ProductId = cartProduct.ProductId,
+                Quantity = cartProduct.Quantity,
+                Price = cartProduct.Price,
+            }).ToList();
+            await _repository.AddListOrderProduct(orderProduct);
+
+            var existingOrder = await _orderRepository.GetOrderById(order.Id);
+
+            // kiểm tra Order có OrderProduct hay không
+            if(orderProduct == null || !orderProduct.Any())
             {
-                return "This product is not existed";
+                await _orderRepository.DeleteOrder(existingOrder.Id);
+                return "Cart dont have any product. Please add some Products";
             }
-            OrderProduct orderProduct = new OrderProduct()
-            { 
-                Id = Guid.NewGuid().ToString(),
-                OrderId = orderProductRequest.OrderId,
-                ProductId = orderProductRequest.ProductId,
-                Quantity = orderProductRequest.Quantity,
-                Price = card.Price * orderProductRequest.Quantity,
-            };
-            var result = await _repository.AddOrderProduct(orderProduct);
-            return result ? "Add Successfull" : "Add failed";
+
+            // cập nhật tổng giá tiền khi có order Product
+            existingOrder.TotalPrice = order.OrderProducts.Sum(product => product.Price);
+            await _orderRepository.UpdateOrder(existingOrder);  
+
+            // Xóa Cart product khi người dùng nhập order thành công
+            await _cartRepository.RemoveCartProducts(cart.Id);
+            return "Add List Order Product Successful";
+
         }
 
         public async Task DeleteOrderProduct(string orderProductId)
         {
-          await _repository.DeleteOrderProductById(orderProductId);
+            await _repository.DeleteOrderProductById(orderProductId);
         }
 
         public async Task<List<OrderProduct>> GetAllOrderProducts()
@@ -61,18 +85,18 @@ namespace Services
 
         public async Task<OrderProduct> GetByOrderProductById(string orderProductId)
         {
-           return await _repository.GetOrderProductById(orderProductId);
+            return await _repository.GetOrderProductById(orderProductId);
         }
 
         public async Task<string> UpdateOrderProduct(string orderproductId, OrderProductRequestDtos orderProductRequest)
         {
-           var existingOrderProduct = await GetByOrderProductById(orderproductId);
+            var existingOrderProduct = await GetByOrderProductById(orderproductId);
             var card = await _cardRepositories.GetProductsById(existingOrderProduct.ProductId);
             if (existingOrderProduct != null)
             {
                 return "order product not found";
             }
-            if(orderProductRequest.Quantity > card.Quantity)
+            if (orderProductRequest.Quantity > card.Quantity)
             {
                 return "Not have enough quantity for this card";
             }
