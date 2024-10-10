@@ -63,6 +63,7 @@ namespace Services
                 var category = await _categoryRepositories.GetCategoriesById(subcategory.CategoryId);
                 var newProductImages = new ProductImagesResponse()
                 {
+                    Id = item.Id,
                     ProductId = item.ProductId,
                     ImageId = item.ImageId,
                     ProductName = product.ProductName,
@@ -96,6 +97,8 @@ namespace Services
                     var category = await _categoryRepositories.GetCategoriesById(subcategory.CategoryId);
                     var newProductImages = new ProductImagesResponse()
                     {
+
+                        Id = item.Id,
                         ProductId = item.ProductId,
                         ImageId = item.ImageId,
                         ProductName = product.ProductName,
@@ -143,6 +146,7 @@ namespace Services
             }
             var newPeoductImage = new ProductImagesResponse()
             {
+                Id = productImage.Id,
                 ProductId = productImage.ProductId,
                 ImageId = productImage.ImageId,
                 ProductName = product.ProductName,
