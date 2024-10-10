@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Data.Entity;
 using Services.Interface;
+using System.ComponentModel.DataAnnotations;
 
 namespace Micracle.Controllers
 {
@@ -35,7 +36,7 @@ namespace Micracle.Controllers
         }
 
         [HttpGet("SubcategoryId")]
-        public async Task<IActionResult> GetAllProductImagesBySubCategory(string SubcategoryId)
+        public async Task<IActionResult> GetAllProductImagesBySubCategory([Required]string SubcategoryId)
         {
             try
             {
@@ -55,11 +56,11 @@ namespace Micracle.Controllers
 
 
         [HttpGet("productImages")]
-        public async Task<IActionResult> GetProductIamges(string productImagesId)
+        public async Task<IActionResult> GetProductIamges( [Required] string id)
         {
             try
             {
-                var result = await _services.GetProductImages(productImagesId);
+                var result = await _services.GetProductImages(id);
                 if (result == null)
                 {
                     return NotFound("product not found");
