@@ -34,9 +34,9 @@ namespace Repositories
             return await _context.ProductImages.Where(sc => sc.Product.SubCategoryId.Equals(subcategoryId)).ToListAsync();
         }
 
-        public async Task<ProductImage> GetByIdAsync(string productId, string imageId)
+        public async Task<ProductImage> GetByIdAsync(string productimageId)
         {
-            return await _context.ProductImages.FirstOrDefaultAsync(sc => sc.ProductId.Equals(productId) && sc.ImageId.Equals(imageId));
+            return await _context.ProductImages.FirstOrDefaultAsync(sc => sc.Id.Equals(productimageId));
         }
     }
 }

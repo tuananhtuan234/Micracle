@@ -14,7 +14,7 @@ namespace Services.Interface
         Task<List<ProductImagesResponse>> GetAllProductbySubCate(string subcategoryId);
         //Task<ProductImage> GetProductImageById(string id);
         Task<string> AddProductImages(string productId, string imageId);
-        Task<ProductImagesResponse> GetProductImages(string productImageId, string ImageId);
+        Task<ProductImagesResponse> GetProductImages(string productImageId);
        
     }
 }
