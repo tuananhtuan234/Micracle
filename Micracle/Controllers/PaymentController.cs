@@ -122,7 +122,7 @@ namespace Micracle.Controllers
             var result = await _paymentServices.AddPayment(paymentDto);
             if (result == "AddSuccessful")
             {
-                await _orderServices.UpdateStatus(orderId, 1);               
+                          
                 return Redirect("https://meet.google.com/fcd-wvxs-cvn?authuser=1" + userId); // thay đổi đường link
             }
             return BadRequest("Invalid transaction data.");

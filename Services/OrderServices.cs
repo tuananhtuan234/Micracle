@@ -129,5 +129,10 @@ namespace Services
             await _repository.UpdateOrder(existingOrder);
 
         }
+
+        public async Task<Order> GetOrderByUserIdAsync(string userId)
+        {
+            return await _repository.GetOrderByUserIdAsync(userId);
+        }
     }
 }
