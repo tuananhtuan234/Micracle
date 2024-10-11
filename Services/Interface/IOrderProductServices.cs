@@ -13,7 +13,7 @@ namespace Services.Interface
     {
         Task<List<OrderProduct>> GetAllOrderProducts();
         Task<OrderProduct> GetByOrderProductById(string orderProductId);
-        Task<ServicesResponse<OrderProductReponse>> AddOrderProduct(string userId);
+        Task<ServicesResponse<OrderProductReponse>> AddOrderProduct(string userId, string orderId);
         Task DeleteOrderProduct(string orderProductId);
         Task<string> UpdateOrderProduct(string orderproductId, OrderProductRequestDtos orderProductRequest);
     }

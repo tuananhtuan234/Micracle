@@ -27,9 +27,9 @@ namespace Services
             _cartRepository = cartRepository;
         }
 
-        public async Task<ServicesResponse<OrderProductReponse>> AddOrderProduct(string userId)
+        public async Task<ServicesResponse<OrderProductReponse>> AddOrderProduct(string userId, string orderId)
         {
-            var order = await _orderRepository.GetOrderByUserIdAsync(userId);
+            var order = await _orderRepository.GetOrderById(orderId);
             var cart = await _cartRepository.GetCartByUserIdAsync(userId);
             if (order == null)
             {
