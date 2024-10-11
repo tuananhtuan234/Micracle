@@ -129,6 +129,37 @@ namespace Services
         }
         #endregion
 
+        #region Add user for admin
+        public async Task<bool> AddUserWithoutRegisterAsync(string email, string fullName, string userName, string password, string uRole)
+        {
+            if (await _userRepository.GetUserByEmailAsync(email) != null || await _userRepository.GetUserById(userName) != null)
+            {
+                return false;
+            }
+
+            if (!Enum.TryParse<UserRole>(uRole, true, out var role))
+            {
+                throw new ArgumentException("Invalid role value.");
+            }
+
+            // Tạo mới đối tượng User
+            var user = new User
+            {
+                UserName = userName,
+                Password = password,
+                FullName = fullName,
+                Email = email,
+                CreatedDate = DateTime.Now,
+                Status = 1,
+                Role = (int)role
+            };
+
+            // Thêm người dùng vào hệ thống
+            await _userRepository.AddUserAsync(user);
+            return true;
+        }
+        #endregion
+
         #region CRUD
 
         //Get by Id
@@ -168,6 +199,30 @@ namespace Services
                 existedUser.Address = updateUserDTO.Address;
                 existedUser.UpdatedDate = DateTime.Now;
                 if (Enum.TryParse<UserStatus>(updateUserDTO.Status, true, out var status))
+                {
+                    existedUser.Status = (int)status;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid status value.");
+                }
+            }
+            await _userRepository.UpdateUserAsync(existedUser);
+            return true;
+        }
+
+        //update status for admin
+        public async Task<bool> UpdateUserStatusAsync(string ustatus, string userId)
+        {
+            var existedUser = await _userRepository.GetUserById(userId);
+            if (existedUser == null)
+            {
+                throw new ArgumentException("Cannot find this user Id.");
+            }
+            else
+            {
+                existedUser.UpdatedDate = DateTime.Now;
+                if (Enum.TryParse<UserStatus>(ustatus, true, out var status))
                 {
                     existedUser.Status = (int)status;
                 }

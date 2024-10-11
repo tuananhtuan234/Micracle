@@ -140,6 +140,26 @@ namespace Micracle.Controllers
             }
 
         }
+
+        [HttpPatch]
+        [Route("UpdateUserStatusByID")]
+        public async Task<IActionResult> UpdateUserByID([FromQuery] String id, [FromBody] string ustatus)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _userService.UpdateUserStatusAsync(ustatus, id);
+                return Ok(result ? "Update Successful" : "Update failed");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+
+        }
         #endregion
 
         #region Get all users
@@ -159,6 +179,31 @@ namespace Micracle.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region Add user for admin
+        [HttpPost("Add User For Admin")]
+        public async Task<IActionResult> AddUserForAdmin(string email, string fullName, string userName, string password, string uRole)
+        {
+            try
+            {
+                var result = await _userService.AddUserWithoutRegisterAsync(email, fullName, userName, password, uRole);
+                if (!result)
+                {
+                    return BadRequest("Email already exists.");
+                }
+
+                return Ok("User created successfully.");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
             }
         }
         #endregion
