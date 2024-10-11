@@ -17,5 +17,7 @@ namespace Services.Interface
         Task<User> GetUserByIdAsync(string id);
         Task<bool> UpdateUserAsync(UpdateUserDTO updateUserDTO, string userId);
         Task<List<User>> GetAllUsers();
+        Task<bool> UpdateUserStatusAsync(string ustatus, string userId);
+        Task<bool> AddUserWithoutRegisterAsync(string email, string fullName, string userName, string password, string uRole);
     }
 }
