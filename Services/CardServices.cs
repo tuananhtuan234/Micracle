@@ -1,4 +1,7 @@
 ﻿using Micracle.DTOs;
+using Microsoft.EntityFrameworkCore;
+using Repositories;
+using Repositories.Data;
 using Repositories.Data.DTOs;
 using Repositories.Data.Entity;
 using Repositories.Enums;
@@ -17,23 +20,73 @@ namespace Services
     {
         private readonly ICardRepositories _repositories;
         private readonly IUserRepository _userRepository;
+        private readonly ApplicationDbContext _context;
 
-        public CardServices(ICardRepositories repositories, IUserRepository userRepository)
+        public CardServices(ICardRepositories repositories, IUserRepository userRepository, ApplicationDbContext dbContext)
         {
             _repositories = repositories;
             _userRepository = userRepository;
+            _context = dbContext;
         }
 
-        public async Task<List<Product>> GetAllProduct(string? searchterm)
+        public async Task<List<Product>> GetAllProductSearch(string? searchterm)
         {
-            return await _repositories.GetAllProducts(searchterm);
+            return await _repositories.GetAllProductsSearch(searchterm);
         }
 
         public async Task<Product> GetProductById(string ProductsId)
         {
             return await _repositories.GetProductsById(ProductsId);
         }
-      
+
+
+        public async Task<List<ProductDtos>> GetAllProduct()
+        {
+            var products = await _context.Products.Select(p => new ProductDtos
+            {
+                Id = p.Id,  
+                ProductName = p.ProductName,
+                Description = p.Description,
+                Quantity = p.Quantity,
+                Price = p.Price,
+                Status = p.Status,
+                CreatedDate = p.CreatedDate,
+                UpdatedDate = p.UpdatedDate,
+                CreatedBy = p.CreatedBy,
+                UpdatedBy = p.UpdatedBy,
+                // Giả sử lấy ảnh đầu tiên nếu có
+                ImageId = p.ProductImages.FirstOrDefault() != null ? p.ProductImages.FirstOrDefault().Id : null,
+                Url = p.ProductImages.FirstOrDefault() != null ? p.ProductImages.FirstOrDefault().Image.Url : null,
+            }).ToListAsync();
+
+            return products;
+        }
+
+        public async Task<List<ProductDtos>> GetProductsByIdsAsync(List<string> productIds)
+        {
+            var products = await _context.Products
+                .Where(p => productIds.Contains(p.Id))
+                .Select(p => new ProductDtos
+                {
+                    Id = p.Id,                  
+                    ProductName = p.ProductName,
+                    Description = p.Description,
+                    Quantity = p.Quantity,
+                    Price = p.Price,
+                    Status = p.Status,
+                    CreatedDate = p.CreatedDate,
+                    UpdatedDate = p.UpdatedDate,
+                    CreatedBy = p.CreatedBy,
+                    UpdatedBy = p.UpdatedBy,
+                    // Giả sử lấy ảnh đầu tiên nếu có
+                    ImageId = p.ProductImages.FirstOrDefault() != null ? p.ProductImages.FirstOrDefault().Id : null,
+                    Url = p.ProductImages.FirstOrDefault() != null ? p.ProductImages.FirstOrDefault().Image.Url : null,
+
+                })
+                .ToListAsync();
+
+            return products;
+        }
 
         public async Task<ServicesResponse<AddProductResponseDTO>> AddProduct(string UserId, ProductDTO productdto)
         {
@@ -127,6 +180,6 @@ namespace Services
             await _repositories.DeleteProducts(productId);
             return "Delete success";
         }
-      
+
     }
 }

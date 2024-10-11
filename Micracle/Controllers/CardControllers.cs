@@ -18,11 +18,11 @@ namespace Micracle.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts(string? searchterm)
+        public async Task<IActionResult> GetAllProducts()
         {
             try
             {
-                var product = await _services.GetAllProduct(searchterm);
+                var product = await _services.GetAllProduct();
                 return Ok(product);
             }
             catch (Exception ex)
@@ -32,12 +32,12 @@ namespace Micracle.Controllers
         }
 
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetProductById(string productId)
+        [HttpPost("id")]
+        public async Task<IActionResult> GetProductById([FromQuery]List<string> productId)
         {
             try
             {
-                var products = await _services.GetProductById(productId);
+                var products = await _services.GetProductsByIdsAsync(productId);
 
                 if (products == null)
                 {
