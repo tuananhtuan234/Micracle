@@ -1,6 +1,7 @@
 ﻿using Repositories.Data.DTOs;
 using Repositories.Data.Entity;
 using Repositories.Interface;
+using Services.Helpers;
 using Services.Interface;
 using System;
 using System.Collections.Generic;
@@ -26,9 +27,9 @@ namespace Services
             _cartRepository = cartRepository;
         }
 
-        public async Task<string> AddOrderProduct(string userId, string OrderId)
+        public async Task<ServicesResponse<OrderProductReponse>> AddOrderProduct(string userId)
         {
-            var order = await _orderRepository.GetOrderById(OrderId);
+            var order = await _orderRepository.GetOrderByUserIdAsync(userId);
             var cart = await _cartRepository.GetCartByUserIdAsync(userId);
             if (order == null)
             {
@@ -60,7 +61,7 @@ namespace Services
             if(orderProduct == null || !orderProduct.Any())
             {
                 await _orderRepository.DeleteOrder(existingOrder.Id);
-                return "Cart dont have any product. Please add some Products";
+                return ServicesResponse<OrderProductReponse>.ErrorResponse("Cart dont have any product. Please add some Products");
             }
 
             // cập nhật tổng giá tiền khi có order Product
@@ -69,7 +70,7 @@ namespace Services
 
             // Xóa Cart product khi người dùng nhập order thành công
             await _cartRepository.RemoveCartProducts(cart.Id);
-            return "Add List Order Product Successful";
+            return ServicesResponse<OrderProductReponse>.SuccessResponse(new OrderProductReponse { OrderId = order.Id}); 
 
         }
 
