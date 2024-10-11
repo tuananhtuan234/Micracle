@@ -50,11 +50,11 @@ namespace Micracle.Controllers
         }
 
         [HttpPost("AddOrder/OrderProduct")]
-        public async Task<IActionResult> AddOrderProduct([Required] string userId)
+        public async Task<IActionResult> AddOrderProduct([Required] string userId, string? OrderId)
         {
             try
             {
-                var reuslt = await _services.AddOrderProduct(userId);
+                var reuslt = await _services.AddOrderProduct(userId, OrderId);
                 return Ok(reuslt);
             }
             catch (Exception ex)
