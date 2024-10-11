@@ -10,10 +10,12 @@ namespace Repositories.Interface
     public interface ICardRepositories
     {
         Task DeleteProducts(string ProductId);
-        Task<List<Product>> GetAllProducts(string? searchterm);
+        Task<List<Product>> GetAllProductsSearch(string? searchterm);
         Task AddProducts(Product product);
         Task<bool> UpdateProducts(Product product);
         Task<Product> GetProductsById(string ProductId);
-      
+        Task<List<Product>> GetAllProduct();
+
+
     }
 }

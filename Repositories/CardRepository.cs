@@ -21,7 +21,7 @@ namespace Repositories
             _context = context;
         }
 
-        public async Task<List<Product>> GetAllProducts(string? searchterm)
+        public async Task<List<Product>> GetAllProductsSearch(string? searchterm)
         {
             if (searchterm != null)
             {
@@ -32,6 +32,12 @@ namespace Repositories
                 return await _context.Products.ToListAsync();
             }
         }
+
+        public async Task<List<Product>> GetAllProduct()
+        {
+            return await _context.Products.ToListAsync();
+        }
+
 
         public async Task AddProducts(Product product)
         {
