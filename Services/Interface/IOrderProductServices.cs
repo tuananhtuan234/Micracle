@@ -1,5 +1,6 @@
 ﻿using Repositories.Data.DTOs;
 using Repositories.Data.Entity;
+using Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Services.Interface
     {
         Task<List<OrderProduct>> GetAllOrderProducts();
         Task<OrderProduct> GetByOrderProductById(string orderProductId);
-        Task<string> AddOrderProduct(string userId, string OrderId);
+        Task<ServicesResponse<OrderProductReponse>> AddOrderProduct(string userId);
         Task DeleteOrderProduct(string orderProductId);
         Task<string> UpdateOrderProduct(string orderproductId, OrderProductRequestDtos orderProductRequest);
     }
