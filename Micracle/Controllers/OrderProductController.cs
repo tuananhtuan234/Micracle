@@ -49,7 +49,7 @@ namespace Micracle.Controllers
             }
         }
 
-        [HttpPost("Add Order/ Order Product")]
+        [HttpPost("AddOrder/OrderProduct")]
         public async Task<IActionResult> AddOrderProduct([Required] string userId, string? orderId)
         {
             try

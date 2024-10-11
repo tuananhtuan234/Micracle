@@ -57,6 +57,30 @@ namespace Micracle.Controllers
             }
         }
 
+        #region Test 
+        //[HttpGet("userId")]
+        //public async Task<IActionResult> GetOrderByUserId(string UserId)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrEmpty(UserId))
+        //        {
+        //            return BadRequest("Please enter your orderId");
+        //        }
+        //        var order = await _orderServices.GetOrderByUserIdAsync(UserId);
+        //        if (order == null)
+        //        {
+        //            return NotFound("Order do not existed");
+        //        }
+        //        return Ok(order);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest($"{ex.Message}");
+        //    }
+        //}
+        #endregion
+
         [HttpDelete]
         public async Task<IActionResult> DeleteOrder(string orderId)
         {
