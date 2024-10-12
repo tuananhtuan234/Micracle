@@ -46,9 +46,10 @@ namespace Services
                 await _orderRepository.AddOrder(order);
             }
             // Get product details using product IDs from the cart
-            var productIds = cart.CartProducts.Select(cp => cp.ProductId).ToList();
-            var ListProducts = await _cardRepositories.GetListProductsById(productIds);
-
+            #region test
+            //var productIds = cart.CartProducts.Select(cp => cp.ProductId).ToList();
+            //var ListProducts = await _cardRepositories.GetListProductsById(productIds);
+            #endregion
             // tạo order product dựa trên cartProduct
             var orderProduct = cart.CartProducts.Select(cartProduct => new OrderProduct
             {
@@ -75,16 +76,17 @@ namespace Services
             
             // Xóa Cart product khi người dùng nhập order thành công
             await _cartRepository.RemoveCartProducts(cart.Id);
-            foreach (var item in orderProduct)
-            {
-                var product = ListProducts.FirstOrDefault(p => p.Id == item.ProductId);
-                if (product != null)
-                {
-                    product.Quantity -= item.Quantity;// Reduce the inventory quantity based on the order
-                    await _cardRepositories.UpdateProducts(product); // Update the product in the database
-                }
-            }
-
+            #region test
+            //foreach (var item in orderProduct)
+            //{
+            //    var product = ListProducts.FirstOrDefault(p => p.Id == item.ProductId);
+            //    if (product != null)
+            //    {
+            //        product.Quantity -= item.Quantity;// Reduce the inventory quantity based on the order
+            //        await _cardRepositories.UpdateProducts(product); // Update the product in the database
+            //    }
+            //}
+            #endregion
             return ServicesResponse<OrderProductReponse>.SuccessResponse(new OrderProductReponse { OrderId = order.Id}); 
 
         }
@@ -97,6 +99,11 @@ namespace Services
         public async Task<List<OrderProduct>> GetAllOrderProducts()
         {
             return await _repository.GetAllOrderProduct();
+        }
+
+        public async Task<List<OrderProduct>> GetListOrderProductByOrderId(string orderId)
+        {
+            return await _repository.GetAllOrderProductByOrderId(orderId);
         }
 
         public async Task<OrderProduct> GetByOrderProductById(string orderProductId)

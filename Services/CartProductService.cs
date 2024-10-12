@@ -57,9 +57,6 @@ namespace Services
                 Price = findProductByProductId.Price * addCartProductDTO.Quantity
             };
 
-            findProductByProductId.Quantity -= addCartProductDTO.Quantity;
-            await _cardRepositories.UpdateProducts(findProductByProductId);
-
             // Thêm sản phẩm vào giỏ hàng
             return await _cartProductRepository.AddCartProductAsync(cartProduct);
             
@@ -84,7 +81,6 @@ namespace Services
             {
                 throw new Exception("Product not found in the cart.");
             }
-            existcard.Quantity += cartProduct.Quantity;
 
             // Gọi repository để xóa sản phẩm khỏi giỏ hàng
             return await _cartProductRepository.RemoveCartProductAsync(cartProduct);

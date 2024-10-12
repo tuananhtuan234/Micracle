@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Repositories.Data;
 using Repositories.Data.DTOs;
 using Repositories.Data.Entity;
+using Repositories.Interface;
 using Services;
 using Services.Interface;
 
@@ -16,15 +17,18 @@ namespace Micracle.Controllers
         private readonly IUserServices _userService;
         private readonly ApplicationDbContext _dbContext;
         private readonly IOrderServices _orderServices;
+        private readonly IOrderProductServices _orderProductServices;
+        private readonly ICardServices _cardServices;
 
 
-        public PaymentController(IPaymentServices paymentServices, IUserServices userService, ApplicationDbContext dbContext, IOrderServices orderServices)
+        public PaymentController(IPaymentServices paymentServices, IUserServices userService, ApplicationDbContext dbContext, IOrderServices orderServices, IOrderProductServices orderProductServices, ICardServices cardServices)
         {
             _paymentServices = paymentServices;
             _userService = userService;
             _dbContext = dbContext;
             _orderServices = orderServices;
-
+            _orderProductServices = orderProductServices;
+            _cardServices = cardServices;
         }
 
         [HttpGet]
@@ -119,7 +123,18 @@ namespace Micracle.Controllers
             Method = "VnPay",
             OrderId = orderId
         };
-            var result = await _paymentServices.AddPayment(paymentDto);
+            var result = await _paymentServices.AddPayment(paymentDto);         
+            var listOrderProduct = await _orderProductServices.GetListOrderProductByOrderId(orderId);         
+            foreach (var item in listOrderProduct)
+            {
+                var product = await _cardServices.GetProductById(item.ProductId);
+                if (product != null)
+                {
+                    product.Quantity -= item.Quantity;// Reduce the inventory quantity based on the order
+                    await _cardServices.UpdateQuantityProduct(product.Id,product); // Update the product in the database
+                }
+            }
+
             if (result == "AddSuccessful")
             {                 
                 return Redirect("http://localhost:5000/" /*+ userId*/); // thay đổi đường link

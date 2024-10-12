@@ -39,6 +39,10 @@ namespace Services
             return await _repositories.GetProductsById(ProductsId);
         }
 
+        public async Task<List<Product>> GetListProductsById(List<string> ProductId)
+        {
+            return await _repositories.GetListProductsById(ProductId);
+        }
 
         public async Task<List<ProductDtos>> GetAllProduct()
         {
@@ -170,6 +174,18 @@ namespace Services
 
         }
 
+        public async Task<string> UpdateQuantityProduct(string productId, Product productReponse)
+        {
+            var products =await _repositories.GetProductsById(productId);
+            if(products == null)
+            {
+                return "product not found";
+            }
+            products.Quantity = productReponse.Quantity;
+            var result = await _repositories.UpdateProducts(productReponse);
+            return result ? "Update Successful" : "Update failed";
+
+        }
         public async Task<string> Delete(string productId)
         {
             Product card = await _repositories.GetProductsById(productId);
