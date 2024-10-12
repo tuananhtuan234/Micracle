@@ -34,6 +34,12 @@ namespace Services
             return await _repository.GetPaymentById(paymnetId);
         }
 
+        public async Task<List<Payment>> GetPaymentByUserId(string UserId)
+        {
+            return await _repository.GetPaymentByUserId(UserId);
+        }
+
+
         public async Task<List<Payment>> GetAllPayment(string searchterm)
         {
             return await _repository.GetAllPayment(searchterm);

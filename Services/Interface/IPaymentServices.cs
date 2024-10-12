@@ -18,5 +18,6 @@ namespace Services.Interface
         VnPaymentResponseModel PaymentExecute(Dictionary<string, string> url);
         public string GetUserId(string orderInfo);
         public string GetOrderId(string orderInfo);
+        Task<List<Payment>> GetPaymentByUserId(string UserId);
     }
 }
