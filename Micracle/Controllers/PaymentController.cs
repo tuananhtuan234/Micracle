@@ -121,8 +121,7 @@ namespace Micracle.Controllers
         };
             var result = await _paymentServices.AddPayment(paymentDto);
             if (result == "AddSuccessful")
-            {
-                          
+            {                 
                 return Redirect("http://localhost:5000/" /*+ userId*/); // thay đổi đường link
             }
             return BadRequest("Invalid transaction data.");
