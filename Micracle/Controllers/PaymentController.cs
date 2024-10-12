@@ -31,6 +31,17 @@ namespace Micracle.Controllers
             _cardServices = cardServices;
         }
 
+        [HttpGet("userId")]
+        public async Task<IActionResult> GetPaymentsByUserId(string userId)
+        {
+            var payments = await _paymentServices.GetPaymentByUserId(userId);
+            if (payments == null || !payments.Any())
+            {
+                return NotFound("No payments found for the user.");
+            }
+            return Ok(payments);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAllPayemnt(string? searchterm)
         {
