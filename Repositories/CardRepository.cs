@@ -56,6 +56,11 @@ namespace Repositories
             return await _context.Products.FirstOrDefaultAsync(sc => sc.Id.Equals(ProductId));
         }
 
+        public async Task<List<Product>> GetListProductsById(List<string> ProductId)
+        {
+            return await _context.Products.Where(sc => sc.Id.Equals(ProductId)).ToListAsync();
+        }
+
         public async Task DeleteProducts(string ProductId)
         {
             Product product = await GetProductsById(ProductId);

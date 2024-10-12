@@ -45,9 +45,14 @@ namespace Services
                 };
                 await _orderRepository.AddOrder(order);
             }
+            // Get product details using product IDs from the cart
+            var productIds = cart.CartProducts.Select(cp => cp.ProductId).ToList();
+            var ListProducts = await _cardRepositories.GetListProductsById(productIds);
+
             // tạo order product dựa trên cartProduct
             var orderProduct = cart.CartProducts.Select(cartProduct => new OrderProduct
             {
+           
                 OrderId = order.Id,
                 ProductId = cartProduct.ProductId,
                 Quantity = cartProduct.Quantity,
@@ -67,9 +72,19 @@ namespace Services
             // cập nhật tổng giá tiền khi có order Product
             existingOrder.TotalPrice = order.OrderProducts.Sum(product => product.Price);
             await _orderRepository.UpdateOrder(existingOrder);  
-
+            
             // Xóa Cart product khi người dùng nhập order thành công
             await _cartRepository.RemoveCartProducts(cart.Id);
+            foreach (var item in orderProduct)
+            {
+                var product = ListProducts.FirstOrDefault(p => p.Id == item.ProductId);
+                if (product != null)
+                {
+                    product.Quantity -= item.Quantity;// Reduce the inventory quantity based on the order
+                    await _cardRepositories.UpdateProducts(product); // Update the product in the database
+                }
+            }
+
             return ServicesResponse<OrderProductReponse>.SuccessResponse(new OrderProductReponse { OrderId = order.Id}); 
 
         }
