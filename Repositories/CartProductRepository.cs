@@ -19,6 +19,7 @@ namespace Repositories
             _context = context;
         }
 
+        
         public async Task<CartProduct> AddCartProductAsync(CartProduct cartProduct)
         {
             _context.CartProducts.Add(cartProduct);

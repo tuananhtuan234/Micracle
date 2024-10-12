@@ -123,7 +123,7 @@ namespace Micracle.Controllers
             if (result == "AddSuccessful")
             {
                           
-                return Redirect("https://meet.google.com/fcd-wvxs-cvn?authuser=1" + userId); // thay đổi đường link
+                return Redirect("http://localhost:5000/" /*+ userId*/); // thay đổi đường link
             }
             return BadRequest("Invalid transaction data.");
         }
