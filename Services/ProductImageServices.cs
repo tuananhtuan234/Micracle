@@ -19,14 +19,16 @@ namespace Services
         private readonly IImagesRepository _imagesRepository;
         private readonly ISubCategoriesRepository _subCategoriesRepository;
         private readonly ICategoryRepositories _categoryRepositories;
+        private readonly ICartProductRepository _cartProductRepository;
 
-        public ProductImageServices(IProductImagesRepository productsRepository, ICardServices cardServices, IImagesRepository imagesRepository, ISubCategoriesRepository subCategoriesRepository, ICategoryRepositories categoryRepositories)
+        public ProductImageServices(IProductImagesRepository productsRepository, ICardServices cardServices, IImagesRepository imagesRepository, ISubCategoriesRepository subCategoriesRepository, ICategoryRepositories categoryRepositories, ICartProductRepository cartProductRepository)
         {
             _productsImagesRepository = productsRepository;
             _cardsRepository = cardServices;
             _imagesRepository = imagesRepository;
             _subCategoriesRepository = subCategoriesRepository;
             _categoryRepositories = categoryRepositories;
+            _cartProductRepository = cartProductRepository;
         }
 
         public async Task<string> AddProductImages(string productId, string imageId)
@@ -61,6 +63,7 @@ namespace Services
                 var image = await _imagesRepository.GetImageByid(item.ImageId);
                 var subcategory = await _subCategoriesRepository.GetSubCategoryById(product.SubCategoryId);
                 var category = await _categoryRepositories.GetCategoriesById(subcategory.CategoryId);
+               
                 var newProductImages = new ProductImagesResponse()
                 {
                     Id = item.Id,
@@ -165,8 +168,5 @@ namespace Services
             return newPeoductImage;
 
         }
-
-        
-
     }
 }
