@@ -19,5 +19,7 @@ namespace Services.Interface
         Task<string> Delete(string productId);
         Task<List<ProductDtos>> GetAllProduct();
         Task<List<ProductDtos>> GetProductsByIdsAsync(List<string> productIds);
+        Task<List<Product>> GetListProductsById(List<string> ProductId);
+        Task<string> UpdateQuantityProduct(string productId, Product productReponse);
     }
 }

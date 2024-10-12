@@ -16,5 +16,6 @@ namespace Services.Interface
         Task<ServicesResponse<OrderProductReponse>> AddOrderProduct(string userId, string orderId);
         Task DeleteOrderProduct(string orderProductId);
         Task<string> UpdateOrderProduct(string orderproductId, OrderProductRequestDtos orderProductRequest);
+        Task<List<OrderProduct>> GetListOrderProductByOrderId(string orderId);
     }
 }
