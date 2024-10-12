@@ -63,26 +63,28 @@ namespace Services
                 var image = await _imagesRepository.GetImageByid(item.ImageId);
                 var subcategory = await _subCategoriesRepository.GetSubCategoryById(product.SubCategoryId);
                 var category = await _categoryRepositories.GetCategoriesById(subcategory.CategoryId);
-               
-                var newProductImages = new ProductImagesResponse()
+                if (product.Quantity > 0)
                 {
-                    Id = item.Id,
-                    ProductId = item.ProductId,
-                    ImageId = item.ImageId,
-                    ProductName = product.ProductName,
-                    Description = product.Description,
-                    Quantity = product.Quantity,
-                    Price = product.Price,
-                    Status = product.Status,
-                    CreatedDate = product.CreatedDate,
-                    UpdatedDate = product.UpdatedDate,
-                    CreatedBy = product.CreatedBy,
-                    UpdatedBy = product.UpdatedBy,
-                    Url = image.Url,
-                    Type = subcategory.Type,
-                    Brand = category.Brand,
-                };
-                productImagesResponses.Add(newProductImages);
+                    var newProductImages = new ProductImagesResponse()
+                    {
+                        Id = item.Id,
+                        ProductId = item.ProductId,
+                        ImageId = item.ImageId,
+                        ProductName = product.ProductName,
+                        Description = product.Description,
+                        Quantity = product.Quantity,
+                        Price = product.Price,
+                        Status = product.Status,
+                        CreatedDate = product.CreatedDate,
+                        UpdatedDate = product.UpdatedDate,
+                        CreatedBy = product.CreatedBy,
+                        UpdatedBy = product.UpdatedBy,
+                        Url = image.Url,
+                        Type = subcategory.Type,
+                        Brand = category.Brand,
+                    };
+                    productImagesResponses.Add(newProductImages);
+                }
             }
             return productImagesResponses;
         }
