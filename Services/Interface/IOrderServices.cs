@@ -18,5 +18,6 @@ namespace Services.Interface
         Task<string> Update(string orderId, UpdateOrderDtos orderDto);
         Task UpdateStatus(string orderId, int newStatus);
         Task<Order> GetOrderByUserIdAsync(string userId);
+        Task<List<Order>> GetListOrderByUserId(string userId);
     }
 }

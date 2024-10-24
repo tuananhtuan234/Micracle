@@ -34,6 +34,26 @@ namespace Micracle.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
+        
+        
+        [HttpGet("ListOrder")]
+        public async Task<IActionResult> GetAllOrderByUserId(string userId)
+        {
+            try
+            {
+                var order = await _orderServices.GetListOrderByUserId(userId);
+                if (order == null)
+                {
+                    return NotFound("order not found");
+                }
+                return Ok(order);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpGet("id")]
         public async Task<IActionResult> GetOrderById(string? orderId)

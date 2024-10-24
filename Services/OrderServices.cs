@@ -134,5 +134,10 @@ namespace Services
         {
             return await _repository.GetOrderByUserIdAsync(userId);
         }
+
+        public async Task<List<Order>> GetListOrderByUserId(string userId)
+        {
+            return await _repository.GetListOrderByUserId(userId);
+        }
     }
 }
