@@ -32,6 +32,10 @@ namespace Repositories
         {
             return await _context.Orders.FirstOrDefaultAsync(sc => sc.UserId.Equals(userId));
         }
+        public async Task<List<Order>> GetListOrderByUserId(string userId)
+        {
+            return await _context.Orders.Where(sc => sc.UserId.Equals(userId)).ToListAsync();
+        }
 
         public async Task<Order> GetOrderByUserIdAsync(string userId)
         {

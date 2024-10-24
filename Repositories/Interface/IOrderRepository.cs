@@ -16,6 +16,7 @@ namespace Repositories.Interface
         Task<bool> UpdateOrder(Order order);
         Task DeleteOrder(string orderId);
         Task<Order> GetOrderByUserIdAsync(string userId);
+        Task<List<Order>> GetListOrderByUserId(string userId);
 
     }
 }
