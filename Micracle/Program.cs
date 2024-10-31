@@ -1,6 +1,7 @@
 
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+using Micracle.Controllers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +13,7 @@ using Services;
 using Services.Helpers;
 using Services.Interface;
 using System.Text;
+using Net.payOS;
 
 namespace Micracle
 {
@@ -19,6 +21,22 @@ namespace Micracle
     {
         public static void Main(string[] args)
         {
+
+
+
+            //PayOS============================================================PayOS
+
+            IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+            PayOS payOS = new PayOS(configuration["Environment:PAYOS_CLIENT_ID"] ?? throw new Exception("Cannot find environment"),
+                                configuration["Environment:PAYOS_API_KEY"] ?? throw new Exception("Cannot find environment"),
+                                configuration["Environment:PAYOS_CHECKSUM_KEY"] ?? throw new Exception("Cannot find environment"));
+
+            //PayOS============================================================PayOS
+
+
+
+
             var builder = WebApplication.CreateBuilder(args);
 
 
@@ -32,6 +50,7 @@ namespace Micracle
             });
             //Add services to the container.
             builder.Services.AddControllers();
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
@@ -67,11 +86,15 @@ namespace Micracle
                 options.AddPolicy("AllowSpecificOrigins",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:5000")
+                        builder.WithOrigins("http://localhost:5000", "https://miracle-ashen.vercel.app/")
                                .AllowAnyHeader()
                                .AllowAnyMethod();
                     });
             });
+
+            //PayOS Services
+            builder.Services.AddSingleton(payOS);
+            //PayOS Services
 
             builder.Services.AddScoped<IOrderProductServices, OrderProductServices>();
             builder.Services.AddScoped<IOrderProductRepository, OrderProductRepository>();
