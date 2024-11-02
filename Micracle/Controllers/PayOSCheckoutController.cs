@@ -37,7 +37,7 @@ namespace Micracle.Controllers
             // Trả về trang HTML có tên "MyView.cshtml"
             return View("success");
         }*/
-        [HttpPost("/create-payment-link")]
+        /*[HttpPost("/create-payment-link")]
         public async Task<IActionResult> Checkout()
         {
             try
@@ -68,6 +68,6 @@ namespace Micracle.Controllers
                 Console.WriteLine(exception);
                 return Redirect("/");
             }
-        }
+        }*/
     }
 }
