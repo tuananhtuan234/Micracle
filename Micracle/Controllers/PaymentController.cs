@@ -56,6 +56,8 @@ namespace Micracle.Controllers
             }
         }
 
+
+
         [HttpGet("id")]
         public async Task<IActionResult> GetPaymentById(string paymentId)
         {
@@ -69,6 +71,18 @@ namespace Micracle.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("payment/PayOs")]
+        public async Task<IActionResult> AddPaymentPayOs(PaymentPayosResponse paymentPayosResponse)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _paymentServices.AddPaymentPayOs(paymentPayosResponse);
+                return Ok(result);
+            }
+            return BadRequest(ModelState);
+        }
+
 
         [HttpPost("payment/vnpay")]
         public async Task<IActionResult> AddPayment(string orderId, string userId)
