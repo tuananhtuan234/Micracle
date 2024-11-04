@@ -62,6 +62,24 @@ namespace Services
             return result ? "AddSuccessful" : "Add failed";
         }
 
+        public async Task<string> AddPaymentPayOs(PaymentPayosResponse paymentResponseDto)
+        {
+            if (paymentResponseDto == null)
+            {
+                return "Data is null";
+            }
+            Payment payment = new Payment()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Method = paymentResponseDto.Method,
+                Amount = paymentResponseDto.Amount,
+                Status = 0,
+                OrderId = paymentResponseDto.OrderId,
+            };
+            var result = await _repository.AddPayment(payment);
+            return result ? "AddSuccessful" : "Add failed";
+        }
+
         public string CreatePaymentUrl(HttpContext context, VnPaymentRequestModel model, string userid)
         {
             var user = _userRepository.GetUserById(userid);
