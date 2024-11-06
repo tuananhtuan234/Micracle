@@ -72,17 +72,6 @@ namespace Micracle.Controllers
             }
         }
 
-        [HttpPost("payment/PayOs")]
-        public async Task<IActionResult> AddPaymentPayOs(PaymentPayosResponse paymentPayosResponse)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await _paymentServices.AddPaymentPayOs(paymentPayosResponse);
-                return Ok(result);
-            }
-            return BadRequest(ModelState);
-        }
-
 
         [HttpPost("payment/vnpay")]
         public async Task<IActionResult> AddPayment(string orderId, string userId)

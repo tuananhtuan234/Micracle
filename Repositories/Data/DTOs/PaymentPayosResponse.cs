@@ -9,7 +9,6 @@ namespace Repositories.Data.DTOs
     public class PaymentPayosResponse
     {
         public string Method { get; set; }
-        public float Amount { get; set; }
         public string OrderId { get; set; }
     }
 }
