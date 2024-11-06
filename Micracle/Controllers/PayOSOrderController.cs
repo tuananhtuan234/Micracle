@@ -5,6 +5,7 @@ using Net.payOS.Types;
 using Net.payOS;
 using Repositories.Data.DTOs.PayOSDTO;
 using Response = Repositories.Data.DTOs.PayOSDTO.Response;
+using Services.Interface;
 
 namespace Micracle.Controllers
 {
@@ -13,9 +14,11 @@ namespace Micracle.Controllers
     public class PayOSOrderController : ControllerBase
     {
         private readonly PayOS _payOS;
-        public PayOSOrderController(PayOS payOS)
+        private readonly IPaymentServices _paymentServices;
+        public PayOSOrderController(PayOS payOS, IPaymentServices paymentServices)
         {
             _payOS = payOS;
+            _paymentServices = paymentServices;
         }
 
         [HttpPost("create")]
@@ -30,7 +33,7 @@ namespace Micracle.Controllers
                 PaymentData paymentData = new PaymentData(orderCode, body.price, body.description, items, body.cancelUrl, body.returnUrl);
 
                 CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
-
+                await _paymentServices.AddPaymentPayOs(createPayment.orderCode, body.productName);
                 return Ok(new Response(0, "success", createPayment));
             }
             catch (System.Exception exception)

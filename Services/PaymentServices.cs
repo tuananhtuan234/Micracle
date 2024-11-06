@@ -19,14 +19,16 @@ namespace Services
         private readonly IPaymentRepository _repository;
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly ILogger<PaymentServices> _logger;
 
-        public PaymentServices(IPaymentRepository repository, IConfiguration config, IUserRepository userRepository, ILogger<PaymentServices> logger)
+        public PaymentServices(IPaymentRepository repository, IConfiguration config, IUserRepository userRepository, ILogger<PaymentServices> logger, IOrderRepository orderRepository)
         {
             _repository = repository;
             _configuration = config;
             _userRepository = userRepository;
             _logger = logger;
+            _orderRepository = orderRepository;
         }
 
         public async Task<Payment> GetPaymentById(string paymnetId)
@@ -62,19 +64,17 @@ namespace Services
             return result ? "AddSuccessful" : "Add failed";
         }
 
-        public async Task<string> AddPaymentPayOs(PaymentPayosResponse paymentResponseDto)
+        public async Task<string> AddPaymentPayOs(long method, string orderId)
         {
-            if (paymentResponseDto == null)
-            {
-                return "Data is null";
-            }
+            var order = await _orderRepository.GetOrderById(orderId);
+
             Payment payment = new Payment()
             {
                 Id = Guid.NewGuid().ToString(),
-                Method = paymentResponseDto.Method,
-                Amount = paymentResponseDto.Amount,
+                Method = method.ToString(),
+                Amount = order.TotalPrice,
                 Status = 0,
-                OrderId = paymentResponseDto.OrderId,
+                OrderId = orderId,
             };
             var result = await _repository.AddPayment(payment);
             return result ? "AddSuccessful" : "Add failed";

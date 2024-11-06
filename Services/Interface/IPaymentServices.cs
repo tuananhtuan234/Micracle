@@ -19,6 +19,6 @@ namespace Services.Interface
         public string GetUserId(string orderInfo);
         public string GetOrderId(string orderInfo);
         Task<List<Payment>> GetPaymentByUserId(string UserId);
-        Task<string> AddPaymentPayOs(PaymentPayosResponse paymentResponseDto);
+        Task<string> AddPaymentPayOs(long method, string orderId);
     }
 }
