@@ -6,6 +6,7 @@ using Net.payOS;
 using Repositories.Data.DTOs.PayOSDTO;
 using Response = Repositories.Data.DTOs.PayOSDTO.Response;
 using Services.Interface;
+using Repositories.Data.DTOs;
 
 namespace Micracle.Controllers
 {
@@ -15,25 +16,32 @@ namespace Micracle.Controllers
     {
         private readonly PayOS _payOS;
         private readonly IPaymentServices _paymentServices;
-        public PayOSOrderController(PayOS payOS, IPaymentServices paymentServices)
+        private readonly IOrderServices _orderServices;
+        private readonly IUserServices _userServices;
+        public PayOSOrderController(PayOS payOS, IPaymentServices paymentServices, IOrderServices orderServices, IUserServices userServices)
         {
             _payOS = payOS;
             _paymentServices = paymentServices;
+            _orderServices = orderServices;
+            _userServices = userServices;
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreatePaymentLink(CreatePaymentLinkRequest body)
+        //public async Task<IActionResult> CreatePaymentLink(CreatePaymentLinkRequest body)
+        public async Task<IActionResult> CreatePaymentLink([FromQuery] string orderId, [FromQuery] string userId, PayOSUrl body)
         {
             try
             {
+
                 int orderCode = int.Parse(DateTimeOffset.Now.ToString("ffffff"));
-                ItemData item = new ItemData(body.productName, 1, body.price);
+                var order = await _orderServices.GetOrderById(orderId);
+                ItemData item = new ItemData("OrderId" + order.Id, 1, (int)Math.Ceiling(order.TotalPrice));
                 List<ItemData> items = new List<ItemData>();
                 items.Add(item);
-                PaymentData paymentData = new PaymentData(orderCode, body.price, body.description, items, body.cancelUrl, body.returnUrl);
+                PaymentData paymentData = new PaymentData(orderCode, (int)Math.Ceiling(order.TotalPrice), "Thanh toán đơn " + order.Id, items, body.CancelUrl, body.ReturnUrl);
 
                 CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
-                await _paymentServices.AddPaymentPayOs(createPayment.orderCode, body.productName);
+                await _paymentServices.AddPaymentPayOs(createPayment.orderCode, order.Id);
                 return Ok(new Response(0, "success", createPayment));
             }
             catch (System.Exception exception)
