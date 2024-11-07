@@ -86,7 +86,7 @@ namespace Micracle
                 options.AddPolicy("AllowSpecificOrigins",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:5000", "https://miracle-ashen.vercel.app/")
+                        builder.WithOrigins("http://localhost:5000", "https://miracle-ashen.vercel.app")
                                .AllowAnyHeader()
                                .AllowAnyMethod();
                     });
