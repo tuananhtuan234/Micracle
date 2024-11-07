@@ -39,7 +39,7 @@ namespace Micracle.Controllers
                 ItemData item = new ItemData("OrderId" + order.Id, 1, (int)Math.Ceiling(order.TotalPrice));
                 List<ItemData> items = new List<ItemData>();
                 items.Add(item);
-                PaymentData paymentData = new PaymentData(orderCode, (int)Math.Ceiling(order.TotalPrice), "Đơn của " + user.FullName, items, body.CancelUrl, body.ReturnUrl);
+                PaymentData paymentData = new PaymentData(orderCode, (int)Math.Ceiling(order.TotalPrice), "Miracle", items, body.CancelUrl, body.ReturnUrl);
 
                 CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
                 await _paymentServices.AddPaymentPayOs(createPayment.orderCode, order.Id);
