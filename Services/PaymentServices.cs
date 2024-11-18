@@ -221,5 +221,9 @@ namespace Services
             }
         }
 
+        public Task<Payment> GetPaymentByOrderId(string orderId)
+        {
+            return _repository.GetPaymentByOrderId(orderId);
+        }
     }
 }

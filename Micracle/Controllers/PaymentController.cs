@@ -72,6 +72,21 @@ namespace Micracle.Controllers
             }
         }
 
+        [HttpGet("orderid")]
+        public async Task<IActionResult> GetPaymentByOrderId(string orderId)
+        {
+            try
+            {
+                
+                var result = await _paymentServices.GetPaymentByOrderId(orderId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpPost("payment/vnpay")]
         public async Task<IActionResult> AddPayment(string orderId, string userId)

@@ -24,6 +24,11 @@ namespace Repositories
             return await _context.Payments.FirstOrDefaultAsync(sc => sc.Id.Equals(paymnetId));  
         } 
         
+        public async Task<Payment> GetPaymentByOrderId(string orderId)
+        {
+            return await _context.Payments.FirstOrDefaultAsync(sc => sc.OrderId.Equals(orderId));  
+        } 
+        
         public async Task<List<Payment>> GetPaymentByUserId(string UserId)
         {
             return await _context.Payments.Where(sc => sc.Order.UserId.Equals(UserId)).ToListAsync();
