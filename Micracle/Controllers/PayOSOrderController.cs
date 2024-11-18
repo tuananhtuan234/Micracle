@@ -73,7 +73,7 @@ namespace Micracle.Controllers
         {
             try
             {
-                PaymentLinkInformation paymentLinkInformation = await _payOS.cancelPaymentLink(orderId);
+                PaymentLinkInformation paymentLinkInformation = await _payOS.getPaymentLinkInformation(orderId);
                 return Ok(new Response(0, "Ok", paymentLinkInformation));
             }
             catch (System.Exception exception)
